@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reyona Grocery Hub | Filipino Supermarket in Muntinlupa</title>
+  <link rel="icon" type="image/png" href="image/FAVICON.png" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet" />
+  <!-- Remixicon for icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #1e7e34;
+      --secondary: #f8fafc;
+      --accent: #fbc02d;
+      --text-dark: #232323;
+      --text-light: #fff;
+      --radius: 1rem;
+      --shadow: 0 10px 24px 0 rgba(30,126,52,0.07);
+      --border: 1px solid #e8e9ef;
+      --cart-btn-size: 55px;
+      --cart-btn-offset: 36px;
+      --white: #fff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', Arial, sans-serif; background: var(--secondary); color: var(--text-dark);
+      min-height: 100vh; line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; transition: color .2s; }
+    img { max-width: 100%; display: block; border-radius: .5rem; }
+    button, input { font-family: inherit; outline: none; border: none; background: none; }
+    /* Header */
+    .header {
+      width: 100%; background: var(--primary); color: var(--text-light);
+      box-shadow: var(--shadow); position: sticky; top: 0; z-index: 99;
+    }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 1200px; margin: 0 auto; padding: 1rem 2rem;
+      position: relative;
+    }
+    .nav-logo {
+      display: flex; align-items: center; font-size: 1.6rem;
+      font-weight: 900; gap: 0.75rem; letter-spacing: 1px; color: var(--accent);
+    }
+    .nav-logo img { width: 40px; height: 40px; }
+    .nav-list {
+      display: flex; align-items: center; gap: 2rem;
+      position: relative;
+    }
+    .nav-link {
+      color: var(--text-light); font-weight: 700; font-size: 1rem;
+      padding: 0.25rem 0; position: relative; transition: color .2s;
+    }
+    .nav-link.active, .nav-link:hover { color: var(--accent); }
+    .nav-actions { display: flex; align-items: center; gap: 1.2rem; }
+    .nav-toggle {
+      display: none; font-size: 2rem; background: none; border: none; cursor: pointer; color: var(--accent); margin-left: 1rem;
+      z-index: 200;
+    }
+    /* Cart Button Left Bottom */
+    .floating-cart-btn {
+      position: fixed;
+      left: var(--cart-btn-offset);
+      bottom: var(--cart-btn-offset);
+      z-index: 150;
+      background: var(--primary);
+      color: var(--white);
+      border-radius: 50%;
+      width: var(--cart-btn-size);
+      height: var(--cart-btn-size);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      box-shadow: 0 2px 8px 0 rgba(30,126,52,0.15);
+      cursor: pointer;
+      border: none;
+      transition: background .2s, color .2s, box-shadow .2s;
+    }
+    .floating-cart-btn:hover {
+      background: var(--accent);
+      color: var(--primary);
+    }
+    @media (max-width: 500px) {
+      .floating-cart-btn {
+        left: 12px;
+        bottom: 12px;
+        width: 45px;
+        height: 45px;
+        font-size: 1.5rem;
+      }
+    }
+    /* Cart Sidebar & Overlay */
+    .cart-overlay {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(30,126,52,0.16); z-index: 100; display: none;
+    }
+    .cart-overlay.active { display: block; }
+    .cart-sidebar {
+      position: fixed; top: 0; right: -100%; width: 350px; max-width: 96vw; height: 100%;
+      background: var(--white); box-shadow: -2px 0 16px 0 rgba(30,126,52,0.10);
+      z-index: 101; padding: 2rem 1.5rem; display: flex; flex-direction: column; transition: right .25s;
+      overflow-y: auto;
+    }
+    .cart-sidebar.open { right: 0; }
+    .cart-sidebar-header {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;
+    }
+    .cart-sidebar-title { font-size: 1.2rem; font-weight: 900; color: var(--primary); }
+    .cart-sidebar-close {
+      font-size: 1.8rem; color: var(--primary); cursor: pointer; background: none; border: none;
+      transition: color .2s;
+    }
+    .cart-items { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 1.2rem; }
+    .cart-item {
+      display: flex; gap: 1rem; align-items: flex-start; border-bottom: 1px solid #f0f1f5; padding-bottom: 1rem;
+    }
+    .cart-item-img { width: 60px; height: 60px; object-fit: contain; border-radius: .5rem; background: #f7f8fb; }
+    .cart-item-details { flex: 1; }
+    .cart-item-title { font-size: 1rem; font-weight: 700; margin-bottom: .15rem; }
+    .cart-item-price { color: var(--primary); font-weight: 700; margin-bottom: .15rem; font-size: 0.95rem; }
+    .cart-item-qty {
+      display: flex; align-items: center; gap: .4rem; margin-top: .25rem;
+    }
+    .cart-item-qty-btn {
+      font-size: 1.15rem; background: var(--secondary); border-radius: .3rem; padding: 2px 8px; cursor: pointer;
+      color: var(--primary); border: 1px solid #dbe4f9; transition: background .2s, color .2s;
+    }
+    .cart-item-qty-btn:hover { background: var(--primary); color: var(--white); }
+    .cart-item-remove {
+      color: #e14d4d; font-size: 1.2rem; margin-left: .5rem; cursor: pointer; background: none; border: none; transition: color .2s;
+    }
+    .cart-sidebar-footer {
+      margin-top: 2rem; display: flex; align-items: center; justify-content: space-between; font-weight: 700; font-size: 1.05rem;
+    }
+    .cart-sidebar-footer .checkout-btn {
+      padding: 0.7rem 1.6rem; background: var(--primary); color: var(--white); border-radius: .5rem; border: none;
+      font-weight: 700; cursor: pointer; transition: background .2s;
+    }
+    .cart-sidebar-footer .checkout-btn:hover { background: var(--accent); color: var(--primary); }
+    /* Main Content */
+    main { max-width: 1170px; margin: 0 auto; padding: 2.5rem 1.25rem 3rem; }
+    .hero {
+      display: flex; align-items: center; justify-content: space-between; gap: 3rem;
+      background: linear-gradient(90deg, #e8f5e9 0%, #fffde7 100%);
+      border-radius: var(--radius); padding: 2rem 2.5rem; margin-bottom: 2.5rem;
+      box-shadow: var(--shadow); flex-wrap: wrap;
+    }
+    .hero-content { flex: 1; min-width: 260px; }
+    .hero-title {
+      font-size: 2.6rem; font-weight: 900; color: var(--primary); line-height: 1.1; margin-bottom: 1.1rem;
+    }
+    .hero-desc { color: #6c7a91; font-size: 1.12rem; margin-bottom: 1.6rem; max-width: 430px; }
+    .hero-btns { display: flex; gap: 1.1rem; }
+    .btn-primary, .btn-secondary {
+      padding: 0.95rem 2.3rem; font-size: 1rem; border-radius: .7rem; font-weight: 900;
+      cursor: pointer; transition: background .2s, color .2s, box-shadow .2s; box-shadow: 0 2px 8px 0 rgba(30,126,52,0.08);
+      outline: none; border: none;
+    }
+    .btn-primary { background: var(--primary); color: var(--white); }
+    .btn-primary:hover { background: var(--accent); color: var(--primary);}
+    .btn-secondary { background: var(--white); color: var(--primary); border: 2px solid var(--primary);}
+    .btn-secondary:hover { background: var(--primary); color: var(--white);}
+    .hero-img-container { min-width: 220px; flex: 1; display: flex; justify-content: flex-end; align-items: center;}
+    .hero-img {
+      width: 320px; max-width: 100%; border-radius: var(--radius); box-shadow: 0 2px 24px 0 rgba(30,126,52,.11); background: #f2f8ff; object-fit: contain;
+    }
+    /* Products */
+    .section-title {
+      font-size: 2.1rem; color: var(--primary); font-weight: 900; text-align: center; margin-bottom: 2rem; margin-top: 1rem;
+    }
+    .products-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; margin-bottom: 3rem;
+    }
+    .product-card {
+      background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.5rem 1.1rem;
+      display: flex; flex-direction: column; align-items: center; transition: transform .18s, box-shadow .2s; position: relative;
+    }
+    .product-card:hover { transform: translateY(-6px) scale(1.03); box-shadow: 0 12px 32px 0 rgba(30,126,52,.12);}
+    .product-img { width: 120px; height: 120px; object-fit: contain; margin-bottom: 1.1rem; background: #f7f8fb; border-radius: .5rem;}
+    .product-name { font-weight: 900; font-size: 1.07rem; text-align: center; margin-bottom: .4rem;}
+    .product-desc { font-size: 0.97rem; color: #6c7a91; margin-bottom: 0.7rem; text-align: center;}
+    .product-stock { font-size: 0.95rem; margin-bottom: 0.3rem; color: var(--primary);}
+    .product-price { font-weight: 700; font-size: 1.1rem; color: var(--primary); margin-bottom: 1rem;}
+    .product-add {
+      background: var(--primary); color: var(--white); border-radius: .4rem; padding: 0.65rem 1.5rem; font-weight: 900; cursor: pointer; font-size: 1rem; border: none;
+      transition: background .2s; display: flex; align-items: center; gap: .45rem;
+    }
+    .product-add:hover { background: var(--accent); color: var(--primary);}
+    .product-badge {
+      position: absolute; top: 1.2rem; right: 1.2rem; background: var(--accent); color: var(--white); font-weight: 700; font-size: .92rem;
+      padding: 0.22rem 0.8rem; border-radius: .5rem; letter-spacing: 1px; box-shadow: 0 2px 8px 0 rgba(243,200,110,0.08);
+    }
+    /* Info Sections */
+    .info-sections {
+      display: flex; flex-wrap: wrap; gap: 2rem; margin-bottom: 2.5rem; justify-content: center;
+    }
+    .info-card {
+      background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.6rem 1.2rem; min-width: 240px; flex: 1 1 240px;
+      display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 370px;
+    }
+    .info-icon { font-size: 2.3rem; color: var(--primary); margin-bottom: 0.7rem;}
+    .info-title { font-size: 1.15rem; font-weight: 900; margin-bottom: .4rem;}
+    .info-desc { color: #6c7a91; font-size: 0.97rem;}
+    /* Policy Sections */
+    .policy-sections {
+      display: flex; flex-wrap: wrap; gap: 2rem; margin: 2rem 0; justify-content: center;
+    }
+    .policy-card {
+      background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 2rem 1.5rem; min-width: 260px; flex: 1 1 260px;
+      max-width: 400px; text-align: left; display: flex; flex-direction: column;
+    }
+    .policy-title { font-size: 1.25rem; font-weight: 900; margin-bottom: .7rem; color: var(--primary);}
+    .policy-body { color: #6c7a91; font-size: 1rem; line-height: 1.7;}
+    /* Footer */
+    .footer {
+      background: var(--primary); color: var(--white); padding: 3rem 0 1.2rem; margin-top: 3rem; border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .footer-container {
+      max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 2.2rem; justify-content: space-between; align-items: flex-start; padding: 0 2rem;
+    }
+    .footer-brand { flex: 1 1 240px; margin-bottom: 2rem;}
+    .footer-logo {
+      display: flex; align-items: center; font-size: 1.4rem; font-weight: 900; gap: .6rem; margin-bottom: 0.6rem; color: var(--accent);
+    }
+    .footer-logo img { width: 34px; height: 34px; }
+    .footer-desc { color: #fbc02d; font-size: 1.01rem; margin-bottom: .8rem;}
+    .footer-links-group { flex: 1 1 160px; margin-bottom: 2rem;}
+    .footer-links-title { font-size: 1.1rem; font-weight: 900; margin-bottom: .45rem; letter-spacing: .5px;}
+    .footer-links { display: flex; flex-direction: column; gap: .4rem;}
+    .footer-link { color: #fff2ef; font-size: .99rem; transition: color .2s; opacity: .94;}
+    .footer-link:hover { color: var(--accent);}
+    .footer-bottom { text-align: center; font-size: .97rem; color: #fff2ef; margin-top: 2rem; opacity: .85;}
+    .footer-bottom a { color: #fff; font-weight: 700; text-decoration: underline; transition: color .2s;}
+    .footer-bottom a:hover { color: var(--accent);}
+    /* Responsive Design */
+    @media (max-width: 1100px) {
+      .hero { flex-direction: column; text-align: center; }
+      .hero-content, .hero-img-container { justify-content: center; }
+      .hero-img { margin: 1.5rem auto 0 auto; }
+    }
+    @media (max-width: 900px) {
+      .nav-list { gap: 1.3rem; }
+      .footer-container { flex-direction: column; gap: 2.8rem; align-items: flex-start; }
+    }
+    @media (max-width: 776px) {
+      .nav { padding: 1rem 1rem; }
+      .main { padding: 1.5rem .5rem 2rem; }
+      .products-grid, .info-sections, .policy-sections { gap: 1.1rem; }
+      .footer-container { padding: 0 1rem; }
+    }
+    @media (max-width: 700px) {
+      .nav-list {
+        position: fixed; top: 0; right: -100vw; width: 80vw; height: 100vh; background: var(--primary);
+        flex-direction: column; gap: 2rem; padding-top: 5rem; z-index: 120; transition: right .25s;
+        box-shadow: -2px 0 18px 0 rgba(30,126,52,0.09);
+      }
+      .nav-list.open { right: 0; }
+      .nav-toggle { display: block; }
+      .nav-close {
+        display: none;
+      }
+      .nav-list .nav-close {
+        display: block;
+        position: absolute;
+        top: 1.1rem;
+        right: 1.6rem;
+        background: none;
+        border: none;
+        font-size: 2rem;
+        color: var(--accent);
+        cursor: pointer;
+        z-index: 999;
+      }
+    }
+    @media (max-width: 600px) {
+      .hero { padding: 1.2rem .7rem; }
+      .policy-card { padding: 1.5rem .7rem; }
+      .footer { padding: 2rem 0 1.1rem; }
+    }
+    @media (max-width: 430px) {
+      .cart-sidebar { width: 98vw; padding: 1.2rem .6rem; }
+      .footer-logo img { width: 28px; height: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header" id="header">
+    <nav class="nav">
+      <a href="index.html" class="nav-logo">
+        <img src="image/LOGO.png" alt="Reyona Grocery Hub Logo" />
+        Reyona Grocery Hub
+      </a>
+      <ul class="nav-list" id="nav-list">
+        <li><a href="index.html" class="nav-link active">Home</a></li>
+        <li><a href="#shop" class="nav-link">Products</a></li>
+        <li><a href="#about" class="nav-link">About Us</a></li>
+        <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
+        <li><a href="#faq" class="nav-link">FAQ</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+        <button class="nav-close" id="nav-close" aria-label="Close menu"><i class="ri-close-line"></i></button>
+      </ul>
+      <div class="nav-actions">
+        <button class="nav-toggle" id="nav-toggle" aria-label="Open menu"><i class="ri-menu-3-line"></i></button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Floating Cart Button -->
+  <button class="floating-cart-btn" id="cart-btn" aria-label="Open cart">
+    <i class="ri-shopping-basket-2-line"></i>
+  </button>
+
+  <!-- Cart Sidebar & Overlay -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <aside class="cart-sidebar" id="cart-sidebar" aria-label="Shopping cart">
+    <div class="cart-sidebar-header">
+      <div class="cart-sidebar-title">My Cart</div>
+      <button class="cart-sidebar-close" id="cart-close-btn" aria-label="Close cart"><i class="ri-close-line"></i></button>
+    </div>
+    <div class="cart-items" id="cart-items">
+      <!-- Cart items will be rendered here by JS -->
+    </div>
+    <div class="cart-sidebar-footer">
+      <span><span id="cart-items-count">0</span> items | <span id="cart-total">₱0</span></span>
+      <button class="checkout-btn" id="checkout-btn">Checkout</button>
+    </div>
+  </aside>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <h1 class="hero-title">Welcome to <span style="color:var(--accent)">Reyona Grocery Hub!</span></h1>
+        <div class="hero-desc">
+          Para sa inyong convenience, nandito kami sa puso ng Muntinlupa para magbigay ng sariwa at kalidad na produkto para sa bawat pamilya. From fresh produce to pantry essentials, we’ve got everything you need under one roof.<br><br>
+          Mahal kami ng mga customer dahil sa aming maasahang serbisyo at abot-kayang presyo. Halina at maranasan ang shopping experience na swak sa bawat pamilya!
+        </div>
+        <div class="hero-btns">
+          <a href="#shop" class="btn-primary">Shop Now</a>
+          <a href="#about" class="btn-secondary">Learn More</a>
+        </div>
+      </div>
+      <div class="hero-img-container">
+        <img src="image/placeholder.png" alt="Fresh Filipino Grocery" class="hero-img" />
+      </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="info-sections">
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-leaf-line"></i></div>
+        <div class="info-title">Fresh & Local</div>
+        <div class="info-desc">Sariwa at locally sourced products araw-araw.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-user-heart-line"></i></div>
+        <div class="info-title">Friendly Staff</div>
+        <div class="info-desc">Maasahan at magalang na serbisyo.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-money-dollar-circle-line"></i></div>
+        <div class="info-title">Affordable Prices</div>
+        <div class="info-desc">Abot-kayang presyo para sa araw-araw.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-map-pin-line"></i></div>
+        <div class="info-title">Convenient Location</div>
+        <div class="info-desc">Barangay Alabang, Muntinlupa – madaling puntahan.</div>
+      </div>
+    </section>
+
+    <!-- Products -->
+    <section id="shop">
+      <h2 class="section-title">Shop Groceries</h2>
+      <div class="products-grid" id="products-grid">
+        <div class="product-card" data-id="1">
+          <span class="product-badge">Qty: 10</span>
+          <img src="image/placeholder.png" alt="Fresh Mangoes" class="product-img" />
+          <div class="product-name">Fresh Mangoes</div>
+          <div class="product-desc">Masarap at bagong pitas na mangga mula Luzon.</div>
+          <div class="product-price">₱120.99</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="2">
+          <span class="product-badge">Qty: 5</span>
+          <img src="image/placeholder.png" alt="Premium Rice 5kg" class="product-img" />
+          <div class="product-name">Premium Rice 5kg</div>
+          <div class="product-desc">High-quality local rice. Malambot, masarap, at abot-kaya.</div>
+          <div class="product-price">₱285.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="3">
+          <span class="product-badge">Qty: 8</span>
+          <img src="image/placeholder.png" alt="Chicken Drumsticks" class="product-img" />
+          <div class="product-name">Chicken Drumsticks</div>
+          <div class="product-desc">Fresh, tender, and ready for your favorite ulam.</div>
+          <div class="product-price">₱199.50</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="4">
+          <span class="product-badge">Qty: 15</span>
+          <img src="image/placeholder.png" alt="Eggs (1 Dozen)" class="product-img" />
+          <div class="product-name">Eggs (1 Dozen)</div>
+          <div class="product-desc">Farm-fresh eggs for breakfast, baking, or snacks.</div>
+          <div class="product-price">₱98.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="5">
+          <span class="product-badge">Qty: 12</span>
+          <img src="image/placeholder.png" alt="Banana (Lakatan)" class="product-img" />
+          <div class="product-name">Banana (Lakatan)</div>
+          <div class="product-desc">Sariwang lakatan na saging, perfect pang-meryenda.</div>
+          <div class="product-price">₱55.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="6">
+          <span class="product-badge">Qty: 7</span>
+          <img src="image/placeholder.png" alt="Tilapia (Fresh)" class="product-img" />
+          <div class="product-name">Tilapia (Fresh)</div>
+          <div class="product-desc">Fresh tilapia, ready to cook for Filipino dishes.</div>
+          <div class="product-price">₱99.90</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="7">
+          <span class="product-badge">Qty: 20</span>
+          <img src="image/placeholder.png" alt="Instant Noodles (Pack)" class="product-img" />
+          <div class="product-name">Instant Noodles (Pack)</div>
+          <div class="product-desc">Masarap at mabilis lutuin, perfect for rainy days.</div>
+          <div class="product-price">₱13.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="8">
+          <span class="product-badge">Qty: 9</span>
+          <img src="image/placeholder.png" alt="Coffee 3-in-1 (10 Sachets)" class="product-img" />
+          <div class="product-name">Coffee 3-in-1 (10 Sachets)</div>
+          <div class="product-desc">Delicious Filipino instant coffee for your mornings.</div>
+          <div class="product-price">₱54.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="9">
+          <span class="product-badge">Qty: 6</span>
+          <img src="image/placeholder.png" alt="Laundry Detergent (Big)" class="product-img" />
+          <div class="product-name">Laundry Detergent (Big)</div>
+          <div class="product-desc">Malinis at mabango, good for large families.</div>
+          <div class="product-price">₱165.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="10">
+          <span class="product-badge">Qty: 18</span>
+          <img src="image/placeholder.png" alt="Canned Sardines (Pack)" class="product-img" />
+          <div class="product-name">Canned Sardines (Pack)</div>
+          <div class="product-desc">Filipino staple, easy to prepare and delicious.</div>
+          <div class="product-price">₱32.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Us -->
+    <section class="info-sections" id="about">
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-store-2-line"></i></div>
+        <div class="info-title">Our Story</div>
+        <div class="info-desc">
+          Reyona Grocery Hub started with a simple mission: to bring quality groceries closer to every home in Muntinlupa. Established by Golfo Reynalyn Quito, our hub has grown into a trusted supermarket serving thousands of satisfied customers across NCR.
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-heart-2-line"></i></div>
+        <div class="info-title">Our Values</div>
+        <div class="info-desc">
+          <strong>Freshness First:</strong> We prioritize fresh and safe products for our customers.<br>
+          <strong>Customer-Centric:</strong> Every shopper’s experience matters; we go the extra mile.<br>
+          <strong>Community Focused:</strong> Supporting local farmers and suppliers is at the heart of what we do.
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-flag-2-line"></i></div>
+        <div class="info-title">Our Goal</div>
+        <div class="info-desc">
+          To be the preferred grocery destination in Muntinlupa, providing convenient access to quality food products while maintaining excellent service and value.
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section class="info-sections">
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-truck-line"></i></div>
+        <div class="info-title">Home Delivery</div>
+        <div class="info-desc">Quick and reliable delivery for your convenience.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-box-3-line"></i></div>
+        <div class="info-title">Bulk Orders</div>
+        <div class="info-desc">Perfect for parties, events, or small businesses.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-star-line"></i></div>
+        <div class="info-title">Loyalty Program</div>
+        <div class="info-desc">Earn rewards and enjoy exclusive discounts.</div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="info-sections" id="testimonials">
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-chat-3-line"></i></div>
+        <div class="info-title">Testimonial</div>
+        <div class="info-desc">
+          “Reyona Grocery Hub is my go-to for fresh vegetables and friendly service. Laging sulit!” – Maria Santos, Muntinlupa
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-chat-3-line"></i></div>
+        <div class="info-title">Testimonial</div>
+        <div class="info-desc">
+          “They deliver fast, and the products are always top quality. Highly recommended!” – Jose Ramirez, Alabang
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="info-sections" id="faq">
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-question-answer-line"></i></div>
+        <div class="info-title">Do you offer home delivery?</div>
+        <div class="info-desc">Yes! We deliver across Muntinlupa and select NCR areas.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-question-answer-line"></i></div>
+        <div class="info-title">Can I place bulk orders?</div>
+        <div class="info-desc">Absolutely, please contact us in advance.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-question-answer-line"></i></div>
+        <div class="info-title">Do you accept cashless payments?</div>
+        <div class="info-desc">Yes, we accept credit/debit cards and GCash.</div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="info-sections" id="contact">
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-map-pin-line"></i></div>
+        <div class="info-title">Get in Touch</div>
+        <div class="info-desc">
+          Address: 4-36 7B Ilaya Street, Barangay Alabang, City of Muntinlupa, NCR, 1770, Philippines<br>
+          Phone: <a href="tel:+639358201476" style="color:var(--accent);">+63 935 820 1476</a><br>
+          Email: <a href="mailto:info@reyonagrocery.store" style="color:var(--accent);">info@reyonagrocery.store</a>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-time-line"></i></div>
+        <div class="info-title">Business Hours</div>
+        <div class="info-desc">
+          Monday to Saturday, 8:00 AM – 8:00 PM<br>Sunday, 8:00 AM – 5:00 PM
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-mail-send-line"></i></div>
+        <div class="info-title">Message Us</div>
+        <div class="info-desc">
+          Para sa inquiries o feedback, maari kayong magpadala ng email o tumawag sa aming hotline. Nandito kami para tumulong sa lahat ng inyong pangangailangan sa grocery shopping!
+        </div>
+      </div>
+    </section>
+
+    <!-- Policy Links Section -->
+    <section class="policy-sections" id="policies">
+      <div class="policy-card">
+        <div class="policy-title">Privacy Policy</div>
+        <div class="policy-body">
+          Your privacy is important to us. We are committed to protecting your information and will never share it with third parties without your consent.<br><br>
+          <em>This is a placeholder. The detailed privacy policy will be available soon.</em>
+        </div>
+      </div>
+      <div class="policy-card">
+        <div class="policy-title">Terms of Service</div>
+        <div class="policy-body">
+          By using Reyona Grocery Hub, you agree to our terms and conditions, including compliance with applicable laws and respect for intellectual property.<br><br>
+          <em>This is a placeholder. The detailed terms will be available soon.</em>
+        </div>
+      </div>
+      <div class="policy-card">
+        <div class="policy-title">Refund Policy</div>
+        <div class="policy-body">
+          Not satisfied with your purchase? We offer easy returns and exchanges for eligible products within 7 days of delivery.<br><br>
+          <em>This is a placeholder. Full refund policy coming soon.</em>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="image/LOGO.png" alt="Reyona Grocery Hub Logo" />
+          Reyona Grocery Hub
+        </div>
+        <div class="footer-desc">
+          4-36 7B Ilaya Street, Barangay Alabang, City of Muntinlupa, NCR, 1770, Philippines<br>
+          Email: <a href="mailto:info@reyonagrocery.store" style="color:var(--accent);">info@reyonagrocery.store</a><br>
+          Phone: <a href="tel:+639358201476" style="color:var(--accent);">+63 935 820 1476</a><br>
+          VAT: 528-104-697-000
+        </div>
+      </div>
+      <div class="footer-links-group">
+        <div class="footer-links-title">Company</div>
+        <div class="footer-links">
+          <a href="#about" class="footer-link">About Us</a>
+          <a href="#shop" class="footer-link">Products</a>
+          <a href="#contact" class="footer-link">Contact</a>
+        </div>
+      </div>
+      <div class="footer-links-group">
+        <div class="footer-links-title">Help</div>
+        <div class="footer-links">
+          <a href="#testimonials" class="footer-link">Testimonials</a>
+          <a href="#faq" class="footer-link">FAQ</a>
+        </div>
+      </div>
+      <div class="footer-links-group">
+        <div class="footer-links-title">Legal</div>
+        <div class="footer-links">
+          <a href="privacy-policy.html" class="footer-link">Privacy Policy</a>
+          <a href="terms.html" class="footer-link">Terms of Service</a>
+          <a href="refund-policy.html" class="footer-link">Refund Policy</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; <span id="footer-year"></span> Reyona Grocery Hub. All rights reserved. Built for Filipino families.
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Navigation for mobile
+    const navToggle = document.getElementById('nav-toggle');
+    const navClose = document.getElementById('nav-close');
+    const navList = document.getElementById('nav-list');
+    navToggle && navToggle.addEventListener('click', () => {
+      navList.classList.add('open');
+    });
+    navClose && navClose.addEventListener('click', () => {
+      navList.classList.remove('open');
+    });
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => navList.classList.remove('open'));
+    });
+
+    // Cart functionality
+    let cart = [];
+
+    const products = [
+      {
+        id: 1,
+        name: "Fresh Mangoes",
+        price: 120.99,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 2,
+        name: "Premium Rice 5kg",
+        price: 285.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 3,
+        name: "Chicken Drumsticks",
+        price: 199.50,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 4,
+        name: "Eggs (1 Dozen)",
+        price: 98.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 5,
+        name: "Banana (Lakatan)",
+        price: 55.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 6,
+        name: "Tilapia (Fresh)",
+        price: 99.90,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 7,
+        name: "Instant Noodles (Pack)",
+        price: 13.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 8,
+        name: "Coffee 3-in-1 (10 Sachets)",
+        price: 54.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 9,
+        name: "Laundry Detergent (Big)",
+        price: 165.00,
+        img: "image/placeholder.png"
+      },
+      {
+        id: 10,
+        name: "Canned Sardines (Pack)",
+        price: 32.00,
+        img: "image/placeholder.png"
+      }
+    ];
+
+    const cartBtn = document.getElementById('cart-btn');
+    const cartSidebar = document.getElementById('cart-sidebar');
+    const cartCloseBtn = document.getElementById('cart-close-btn');
+    const cartOverlay = document.getElementById('cart-overlay');
+    const cartItemsContainer = document.getElementById('cart-items');
+    const cartItemsCount = document.getElementById('cart-items-count');
+    const cartTotal = document.getElementById('cart-total');
+    const checkoutBtn = document.getElementById('checkout-btn');
+
+    function openCart() {
+      cartSidebar.classList.add('open');
+      cartOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeCart() {
+      cartSidebar.classList.remove('open');
+      cartOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    cartBtn && cartBtn.addEventListener('click', openCart);
+    cartCloseBtn && cartCloseBtn.addEventListener('click', closeCart);
+    cartOverlay && cartOverlay.addEventListener('click', closeCart);
+
+    // Add to cart logic
+    document.querySelectorAll('.product-add').forEach((btn, idx) => {
+      btn.addEventListener('click', function() {
+        const card = btn.closest('.product-card');
+        const pid = parseInt(card.getAttribute('data-id'));
+        addToCart(pid);
+        openCart();
+      });
+    });
+
+    function addToCart(productId) {
+      const prod = products.find(p => p.id === productId);
+      const itemIndex = cart.findIndex(i => i.id === productId);
+      if (itemIndex > -1) {
+        cart[itemIndex].qty += 1;
+      } else {
+        cart.push({
+          id: prod.id,
+          name: prod.name,
+          price: prod.price,
+          img: prod.img,
+          qty: 1
+        });
+      }
+      renderCart();
+    }
+
+    function increaseQty(productId) {
+      const item = cart.find(i => i.id === productId);
+      if (item) {
+        item.qty += 1;
+        renderCart();
+      }
+    }
+
+    function decreaseQty(productId) {
+      const item = cart.find(i => i.id === productId);
+      if (item && item.qty > 1) {
+        item.qty -= 1;
+        renderCart();
+      }
+    }
+
+    function removeItem(productId) {
+      cart = cart.filter(i => i.id !== productId);
+      renderCart();
+    }
+
+    function renderCart() {
+      cartItemsContainer.innerHTML = '';
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<div style="text-align:center;color:#aaa;font-size:1rem;">Your cart is empty.</div>';
+      } else {
+        cart.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'cart-item';
+          div.innerHTML = `
+            <img src="${item.img}" alt="${item.name}" class="cart-item-img">
+            <div class="cart-item-details">
+              <div class="cart-item-title">${item.name}</div>
+              <div class="cart-item-price">₱${item.price}</div>
+              <div class="cart-item-qty">
+                <button class="cart-item-qty-btn" aria-label="Decrease quantity"><i class="ri-subtract-line"></i></button>
+                <span>${item.qty}</span>
+                <button class="cart-item-qty-btn" aria-label="Increase quantity"><i class="ri-add-line"></i></button>
+                <button class="cart-item-remove" aria-label="Remove item"><i class="ri-delete-bin-6-line"></i></button>
+              </div>
+            </div>
+          `;
+          // Decrease qty
+          div.querySelector('.cart-item-qty-btn[aria-label="Decrease quantity"]').addEventListener('click', function() {
+            decreaseQty(item.id);
+          });
+          // Increase qty
+          div.querySelector('.cart-item-qty-btn[aria-label="Increase quantity"]').addEventListener('click', function() {
+            increaseQty(item.id);
+          });
+          // Remove item
+          div.querySelector('.cart-item-remove').addEventListener('click', function() {
+            removeItem(item.id);
+          });
+          cartItemsContainer.appendChild(div);
+        });
+      }
+      // Update footer
+      cartItemsCount.textContent = cart.reduce((total, i) => total + i.qty, 0);
+      cartTotal.textContent = '₱' + cart.reduce((total, i) => total + i.qty * i.price, 0).toFixed(2);
+    }
+
+    // Initial cart render (empty)
+    renderCart();
+
+    // Footer year
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+    // Checkout button - redirect to order-summary.html
+    checkoutBtn && checkoutBtn.addEventListener('click', function() {
+      window.location.href = "order-summary.html";
+    });
+  </script>
+</body>
+</html>
