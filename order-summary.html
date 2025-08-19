@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Summary | Reyona Grocery Hub</title>
+  <link rel="icon" type="image/png" href="image/FAVICON.png" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet" />
+  <!-- Remixicon for icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #1e7e34;
+      --secondary: #f8fafc;
+      --accent: #fbc02d;
+      --text-dark: #232323;
+      --text-light: #fff;
+      --radius: 1rem;
+      --shadow: 0 10px 24px 0 rgba(30,126,52,0.07);
+      --border: 1px solid #e8e9ef;
+      --white: #fff;
+      --input-bg: #f7f7f7;
+      --input-border: #cfd8dc;
+      --input-radius: .5rem;
+      --error: #e53935;
+      --success: #388e3c;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', Arial, sans-serif; background: var(--secondary); color: var(--text-dark);
+      min-height: 100vh; line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; transition: color .2s; }
+    img { max-width: 100%; display: block; border-radius: .5rem; }
+    button, input, select, textarea { font-family: inherit; outline: none; border: none; background: none; }
+    .header {
+      width: 100%; background: var(--primary); color: var(--text-light);
+      box-shadow: var(--shadow); position: sticky; top: 0; z-index: 99;
+    }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 1200px; margin: 0 auto; padding: 1rem 2rem;
+      position: relative;
+    }
+    .nav-logo {
+      display: flex; align-items: center; font-size: 1.5rem;
+      font-weight: 900; gap: 0.75rem; letter-spacing: 1px; color: var(--accent);
+    }
+    .nav-logo img { width: 40px; height: 40px; }
+    .nav-list {
+      display: flex; align-items: center; gap: 2rem;
+      position: relative;
+    }
+    .nav-link {
+      color: var(--text-light); font-weight: 700; font-size: 1rem;
+      padding: 0.25rem 0; position: relative; transition: color .2s;
+    }
+    .nav-link.active, .nav-link:hover { color: var(--accent); }
+    main {
+      max-width: 550px;
+      margin: 0 auto;
+      padding: 2.5rem 1rem 3rem;
+    }
+    .summary-container {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2.2rem 1.3rem 2rem;
+      margin-top: 2.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .summary-header {
+      display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;
+    }
+    .summary-header img {
+      width: 38px; height: 38px;
+    }
+    .summary-title {
+      font-size: 1.65rem;
+      font-weight: 900;
+      color: var(--primary);
+      letter-spacing: .8px;
+    }
+    .summary-desc {
+      color: #546e7a;
+      font-size: 1.02rem;
+      margin-bottom: 2rem;
+    }
+    .order-items-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+      font-size: 1rem;
+    }
+    .order-items-table th,
+    .order-items-table td {
+      padding: 0.7rem .5rem;
+      text-align: left;
+      border-bottom: 1px solid #ececec;
+    }
+    .order-items-table th {
+      color: var(--primary);
+      letter-spacing: .4px;
+      font-weight: 700;
+      background: #f8f8f8;
+      font-size: 1.02rem;
+    }
+    .order-items-table td {
+      color: #232323;
+    }
+    .order-total-row td {
+      font-weight: 900;
+      color: var(--primary);
+      border-top: 2px solid #e8e9ef;
+      background: #f7f7f7;
+    }
+    .order-info {
+      margin-bottom: 2rem;
+      background: #f7f7f7;
+      border-radius: .7rem;
+      padding: 1.1rem 1rem;
+      font-size: 1.02rem;
+      color: #232323;
+    }
+    .order-info strong {
+      color: var(--primary);
+      font-weight: 900;
+    }
+    .customer-form {
+      margin-bottom: 2.2rem;
+      background: #f9fbe7;
+      border-radius: .7rem;
+      padding: 1.5rem 1rem 1.2rem;
+      box-shadow: 0 2px 10px 0 rgba(30,126,52,0.06);
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .form-label {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+    }
+    .form-input, .form-select, .form-textarea {
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: var(--input-radius);
+      font-size: 1rem;
+      padding: 0.85rem 1.1rem;
+      color: #232323;
+      width: 100%;
+      transition: border .2s;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--primary);
+    }
+    .form-textarea {
+      min-height: 60px;
+      resize: vertical;
+    }
+    .form-error {
+      color: var(--error);
+      font-size: 0.98rem;
+      margin-top: .35rem;
+      font-weight: 600;
+    }
+    .form-success {
+      color: var(--success);
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    .submit-btn {
+      background: var(--primary);
+      color: var(--white);
+      font-weight: 900;
+      font-size: 1.08rem;
+      border-radius: .7rem;
+      padding: 0.95rem 2.2rem;
+      border: none;
+      cursor: pointer;
+      transition: background .18s, color .18s;
+      box-shadow: 0 2px 8px 0 rgba(30,126,52,0.10);
+      margin-top: .5rem;
+      display: block;
+      width: 100%;
+    }
+    .submit-btn:hover {
+      background: var(--accent);
+      color: var(--primary);
+    }
+    .confirmation-message {
+      background: #e8f5e9;
+      border: 1.5px solid var(--primary);
+      border-radius: .7rem;
+      padding: 1.7rem 1.2rem;
+      color: var(--primary);
+      font-size: 1.08rem;
+      font-weight: 700;
+      text-align: center;
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 10px 0 rgba(30,126,52,0.07);
+    }
+    .payment-info {
+      background: #fffde7;
+      border: 1.5px solid var(--accent);
+      border-radius: .7rem;
+      padding: 1.3rem 1rem;
+      color: #bc9800;
+      font-size: 1.04rem;
+      font-weight: 700;
+      text-align: center;
+      margin-top: 1.2rem;
+      margin-bottom: 1.8rem;
+      box-shadow: 0 2px 8px 0 rgba(251,192,45,0.09);
+    }
+    @media (max-width: 700px) {
+      main { max-width: 99vw; padding: 1.5rem .5rem 2rem; }
+      .summary-container { padding: 1.1rem .3rem 1rem; }
+      .order-items-table { font-size: .95rem; }
+      .customer-form { padding: 1rem .4rem .8rem; }
+      .confirmation-message, .payment-info { padding: 1rem .4rem; font-size: 1rem; }
+    }
+    @media (max-width: 500px) {
+      .nav { padding: 1rem .5rem; }
+      .summary-title { font-size: 1.2rem; }
+      .summary-header img { width: 32px; height: 32px; }
+      .order-items-table th, .order-items-table td { padding: .5rem .2rem; }
+    }
+    .footer {
+      background: var(--primary); color: var(--white); padding: 2.2rem 0 1rem; margin-top: 2.5rem; border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .footer-container {
+      max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 2.2rem; justify-content: space-between; align-items: flex-start; padding: 0 2rem;
+    }
+    .footer-brand { flex: 1 1 220px; margin-bottom: 2rem;}
+    .footer-logo {
+      display: flex; align-items: center; font-size: 1.2rem; font-weight: 900; gap: .6rem; margin-bottom: 0.6rem; color: var(--accent);
+    }
+    .footer-logo img { width: 28px; height: 28px; }
+    .footer-desc { color: #fffde7; font-size: .99rem; margin-bottom: .7rem;}
+    .footer-links-group { flex: 1 1 160px; margin-bottom: 2rem;}
+    .footer-links-title { font-size: 1rem; font-weight: 900; margin-bottom: .45rem; letter-spacing: .5px;}
+    .footer-links { display: flex; flex-direction: column; gap: .3rem;}
+    .footer-link { color: #fff2ef; font-size: .99rem; transition: color .2s; opacity: .94;}
+    .footer-link:hover { color: var(--accent);}
+    .footer-bottom { text-align: center; font-size: .97rem; color: #fff2ef; margin-top: 2rem; opacity: .85;}
+    .footer-bottom a { color: #fff; font-weight: 700; text-decoration: underline; transition: color .2s;}
+    .footer-bottom a:hover { color: var(--accent);}
+  </style>
+</head>
+<body>
+  <header class="header" id="header">
+    <nav class="nav">
+      <a href="index.html" class="nav-logo">
+        <img src="image/LOGO.png" alt="Reyona Grocery Hub Logo" />
+        Reyona Grocery Hub
+      </a>
+      <ul class="nav-list" id="nav-list">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="#shop" class="nav-link">Products</a></li>
+        <li><a href="#about" class="nav-link">About Us</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <div class="summary-container" id="order-summary-section">
+      <div class="summary-header">
+        <img src="image/LOGO.png" alt="Reyona Grocery Hub Logo">
+        <span class="summary-title">Your Order Summary</span>
+      </div>
+      <div class="summary-desc">
+        Please review your order details below. If everything looks correct, kindly enter your information and submit your order. After submission, our team will reach out to confirm your product choices, availability, and any special requests. Once confirmed, you will receive a secure payment link. For a smooth shopping experience, please finalize your payment within 24 hours.
+      </div>
+      <table class="order-items-table" id="order-items-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Unit Price</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody id="order-items-body">
+          <!-- Populated by JavaScript -->
+        </tbody>
+        <tfoot>
+          <tr class="order-total-row">
+            <td colspan="3">Total</td>
+            <td id="order-total">₱0.00</td>
+          </tr>
+        </tfoot>
+      </table>
+      <div class="order-info">
+        <strong>Important:</strong> After your order is submitted, a representative from Reyona Grocery Hub will contact you to verify product details, including colors, quantities, and any preferences. Once you confirm, a payment link will be sent according to your chosen method. Please complete payment within <strong>24 hours</strong> to avoid order cancellation.
+      </div>
+      <form class="customer-form" id="order-form" autocomplete="off">
+        <div id="form-status"></div>
+        <div class="form-group">
+          <label class="form-label" for="customer-name">Full Name</label>
+          <input type="text" class="form-input" id="customer-name" name="customer-name" required maxlength="48" />
+          <div class="form-error" id="error-name"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="customer-email">Email Address</label>
+          <input type="email" class="form-input" id="customer-email" name="customer-email" required maxlength="64" />
+          <div class="form-error" id="error-email"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="customer-phone">Contact Number</label>
+          <input type="tel" class="form-input" id="customer-phone" name="customer-phone" required maxlength="18" pattern="^[0-9+ ]*$" />
+          <div class="form-error" id="error-phone"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="customer-address">Delivery Address</label>
+          <textarea class="form-textarea" id="customer-address" name="customer-address" required maxlength="128"></textarea>
+          <div class="form-error" id="error-address"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="payment-method">Preferred Payment Method</label>
+          <select class="form-select" id="payment-method" name="payment-method" required>
+            <option value="">Select payment method</option>
+            <option value="GCash">GCash</option>
+            <option value="Credit/Debit Card">Credit/Debit Card</option>
+            <option value="Bank Transfer">Bank Transfer</option>
+            <option value="Cash on Delivery">Cash on Delivery</option>
+          </select>
+          <div class="form-error" id="error-payment"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="customer-notes">Additional Notes / Requests</label>
+          <textarea class="form-textarea" id="customer-notes" name="customer-notes" maxlength="128" placeholder="(Optional)"></textarea>
+        </div>
+        <button type="submit" class="submit-btn" id="order-submit-btn">Submit Order</button>
+      </form>
+      <div class="confirmation-message" id="confirmation-message" style="display:none;">
+        <i class="ri-checkbox-circle-line" style="font-size:2.2rem;vertical-align:middle;color:var(--success);"></i><br><br>
+        Thank you for placing your order with Reyona Grocery Hub!<br>
+        Your order has been received and is now pending confirmation.<br><br>
+        One of our team members will contact you soon to verify your product selections, availability, and any special requests.<br>
+        After confirmation, you will receive a secure payment link based on your chosen payment method.<br><br>
+        Please complete your payment within <strong>24 hours</strong> to secure your order. Orders not paid within this time may be automatically cancelled.<br><br>
+        If you have questions, feel free to reach out to us anytime.<br>
+        <hr style="margin:1.2rem 0;border:0;border-top:1px solid #e8e9ef;">
+        <span style="font-size:1.05rem;color:var(--primary);font-weight:700;">We appreciate your trust in Reyona Grocery Hub!</span>
+      </div>
+      <div class="payment-info" id="payment-info" style="display:none;">
+        Payment instructions and link will be sent after you confirm your order details with our team.<br>
+        Please watch for a message from us and complete your payment promptly to avoid cancellation.
+      </div>
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="image/LOGO.png" alt="Reyona Grocery Hub Logo" />
+          Reyona Grocery Hub
+        </div>
+        <div class="footer-desc">
+          4-36 7B Ilaya Street, Barangay Alabang, City of Muntinlupa, NCR, 1770, Philippines<br>
+          Email: <a href="mailto:info@reyonagrocery.store" style="color:var(--accent);">info@reyonagrocery.store</a><br>
+          Phone: <a href="tel:+639358201476" style="color:var(--accent);">+63 935 820 1476</a><br>
+          VAT: 528-104-697-000
+        </div>
+      </div>
+      <div class="footer-links-group">
+        <div class="footer-links-title">Company</div>
+        <div class="footer-links">
+          <a href="index.html#about" class="footer-link">About Us</a>
+          <a href="index.html#shop" class="footer-link">Products</a>
+          <a href="index.html#contact" class="footer-link">Contact</a>
+        </div>
+      </div>
+      <div class="footer-links-group">
+        <div class="footer-links-title">Help</div>
+        <div class="footer-links">
+          <a href="index.html#testimonials" class="footer-link">Testimonials</a>
+          <a href="index.html#faq" class="footer-link">FAQ</a>
+        </div>
+      </div>
+      <div class="footer-links-group">
+        <div class="footer-links-title">Legal</div>
+        <div class="footer-links">
+          <a href="privacy-policy.html" class="footer-link">Privacy Policy</a>
+          <a href="terms.html" class="footer-link">Terms of Service</a>
+          <a href="refund-policy.html" class="footer-link">Refund Policy</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; <span id="footer-year"></span> Reyona Grocery Hub. All rights reserved. Built for Filipino families.
+    </div>
+  </footer>
+  <script>
+    // Example cart items for demo (to be replaced with dynamic values in integration)
+    const demoOrder = [
+      { name: "Fresh Mangoes", qty: 2, price: 120.99 },
+      { name: "Premium Rice 5kg", qty: 1, price: 285.00 },
+      { name: "Eggs (1 Dozen)", qty: 2, price: 98.00 }
+    ];
+    function renderOrderItems(items) {
+      const tbody = document.getElementById('order-items-body');
+      const totalCell = document.getElementById('order-total');
+      tbody.innerHTML = '';
+      let total = 0;
+      items.forEach(item => {
+        const subtotal = item.qty * item.price;
+        total += subtotal;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${item.name}</td>
+          <td>${item.qty}</td>
+          <td>₱${item.price.toFixed(2)}</td>
+          <td>₱${subtotal.toFixed(2)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      totalCell.textContent = '₱' + total.toFixed(2);
+    }
+    renderOrderItems(demoOrder);
+
+    // Simple client-side validation and submission logic
+    const orderForm = document.getElementById('order-form');
+    const formStatus = document.getElementById('form-status');
+    const confirmationMessage = document.getElementById('confirmation-message');
+    const paymentInfo = document.getElementById('payment-info');
+    function clearErrors() {
+      document.getElementById('error-name').textContent = '';
+      document.getElementById('error-email').textContent = '';
+      document.getElementById('error-phone').textContent = '';
+      document.getElementById('error-address').textContent = '';
+      document.getElementById('error-payment').textContent = '';
+      formStatus.innerHTML = '';
+    }
+    orderForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      clearErrors();
+      let valid = true;
+      const name = document.getElementById('customer-name').value.trim();
+      const email = document.getElementById('customer-email').value.trim();
+      const phone = document.getElementById('customer-phone').value.trim();
+      const address = document.getElementById('customer-address').value.trim();
+      const payment = document.getElementById('payment-method').value;
+      if (!name) {
+        document.getElementById('error-name').textContent = "Please enter your full name.";
+        valid = false;
+      }
+      if (!email || !email.includes('@')) {
+        document.getElementById('error-email').textContent = "Please enter a valid email address.";
+        valid = false;
+      }
+      if (!phone || !/^[0-9+ ]{7,}$/.test(phone)) {
+        document.getElementById('error-phone').textContent = "Enter a valid contact number.";
+        valid = false;
+      }
+      if (!address) {
+        document.getElementById('error-address').textContent = "Please provide your delivery address.";
+        valid = false;
+      }
+      if (!payment) {
+        document.getElementById('error-payment').textContent = "Please select a payment method.";
+        valid = false;
+      }
+      if (!valid) return;
+      // Simulate order submission
+      orderForm.style.display = 'none';
+      confirmationMessage.style.display = 'block';
+      paymentInfo.style.display = 'block';
+      window.scrollTo({ top: confirmationMessage.offsetTop - 60, behavior: "smooth" });
+    });
+
+    // Footer year
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
