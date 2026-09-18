@@ -6,66 +6,97 @@
   <title>Reyona Grocery Hub | Filipino Supermarket in Muntinlupa</title>
   <link rel="icon" type="image/png" href="image/LOGO.png" />
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
   <!-- Remixicon for icons -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
   <style>
     :root {
       --primary: #1e7e34;
-      --secondary: #f8fafc;
+      --primary-dark: #0f3d1e;
+      --primary-soft: #e7f3e9;
+      --secondary: #fbf9f2;
       --accent: #fbc02d;
-      --text-dark: #232323;
+      --accent-soft: #fff4cc;
+      --text-dark: #1d2a20;
       --text-light: #fff;
-      --radius: 1rem;
-      --shadow: 0 10px 24px 0 rgba(30,126,52,0.07);Pla
-      --border: 1px solid #e8e9ef;
-      --cart-btn-size: 55px;
-      --cart-btn-offset: 36px;
+      --muted: #5f6b62;
+      --radius: 1.25rem;
+      --shadow: 0 14px 34px -14px rgba(15,61,30,0.22);
+      --border: 1px solid #e8e4d3;
+      --cart-btn-size: 58px;
+      --cart-btn-offset: 28px;
       --white: #fff;
+      --display: 'Fraunces', Georgia, serif;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    section[id] { scroll-margin-top: 96px; }
     body {
       font-family: 'Inter', Arial, sans-serif; background: var(--secondary); color: var(--text-dark);
-      min-height: 100vh; line-height: 1.6;
+      min-height: 100vh; line-height: 1.65; -webkit-font-smoothing: antialiased;
     }
     a { text-decoration: none; color: inherit; transition: color .2s; }
     img { max-width: 100%; display: block; border-radius: .5rem; }
     button, input { font-family: inherit; outline: none; border: none; background: none; }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+    .eyebrow {
+      display: inline-block; font-size: .78rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--primary); margin-bottom: .7rem;
+    }
+    .display { font-family: var(--display); font-weight: 700; line-height: 1.08; color: var(--primary-dark); letter-spacing: -.01em; }
+
+    /* Top bar */
+    .topbar {
+      background: var(--primary-dark); color: #d9ecdd; font-size: .82rem; text-align: center; padding: .5rem 1rem;
+      letter-spacing: .02em;
+    }
+    .topbar i { color: var(--accent); margin-right: .3rem; vertical-align: -2px; }
+    .topbar span + span { margin-left: 1.6rem; }
+
     /* Header */
     .header {
-      width: 100%; background: var(--primary); color: var(--text-light);
-      box-shadow: var(--shadow); position: sticky; top: 0; z-index: 99;
+      width: 100%; background: var(--white); color: var(--primary-dark);
+      border-bottom: var(--border); position: sticky; top: 0; z-index: 99;
     }
     .nav {
       display: flex; align-items: center; justify-content: space-between;
-      max-width: 1200px; margin: 0 auto; padding: 1rem 2rem;
+      max-width: 1200px; margin: 0 auto; padding: .85rem 2rem;
       position: relative;
     }
     .nav-logo {
-      display: flex; align-items: center; font-size: 1.6rem;
-      font-weight: 900; gap: 0.75rem; letter-spacing: 1px; color: var(--accent);
+      display: flex; align-items: center; font-family: var(--display); font-size: 1.45rem;
+      font-weight: 700; gap: 0.7rem; color: var(--primary-dark);
     }
-    .nav-logo img { width: 40px; height: 40px; }
+    .nav-logo img { width: 42px; height: 42px; border-radius: 50%; }
     .nav-list {
-      display: flex; align-items: center; gap: 2rem;
+      display: flex; align-items: center; gap: 1.9rem; list-style: none;
       position: relative;
     }
     .nav-link {
-      color: var(--text-light); font-weight: 700; font-size: 1rem;
-      padding: 0.25rem 0; position: relative; transition: color .2s;
+      color: var(--text-dark); font-weight: 600; font-size: .95rem;
+      padding: 0.35rem 0; position: relative; transition: color .2s;
     }
-    .nav-link.active, .nav-link:hover { color: var(--accent); }
+    .nav-link::after {
+      content: ''; position: absolute; left: 0; bottom: 0; width: 0; height: 2px; background: var(--accent);
+      transition: width .25s;
+    }
+    .nav-link.active, .nav-link:hover { color: var(--primary); }
+    .nav-link.active::after, .nav-link:hover::after { width: 100%; }
     .nav-actions { display: flex; align-items: center; gap: 1.2rem; }
     .nav-toggle {
-      display: none; font-size: 2rem; background: none; border: none; cursor: pointer; color: var(--accent); margin-left: 1rem;
+      display: none; font-size: 1.9rem; background: none; border: none; cursor: pointer; color: var(--primary-dark);
       z-index: 200;
     }
+    .nav-close { display: none; }
+
     /* Cart Button Left Bottom */
     .floating-cart-btn {
       position: fixed;
       left: var(--cart-btn-offset);
       bottom: var(--cart-btn-offset);
-      z-index: 150;
+      z-index: 90;
       background: var(--primary);
       color: var(--white);
       border-radius: 50%;
@@ -74,220 +105,390 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2rem;
-      box-shadow: 0 2px 8px 0 rgba(30,126,52,0.15);
+      font-size: 1.7rem;
+      box-shadow: 0 10px 24px -6px rgba(15,61,30,0.5), 0 0 0 5px rgba(251,192,45,.35);
       cursor: pointer;
       border: none;
-      transition: background .2s, color .2s, box-shadow .2s;
+      transition: background .2s, color .2s, transform .2s;
     }
     .floating-cart-btn:hover {
       background: var(--accent);
-      color: var(--primary);
+      color: var(--primary-dark);
+      transform: translateY(-3px);
     }
     @media (max-width: 500px) {
       .floating-cart-btn {
-        left: 12px;
-        bottom: 12px;
-        width: 45px;
-        height: 45px;
+        left: 14px;
+        bottom: 14px;
+        width: 50px;
+        height: 50px;
         font-size: 1.5rem;
       }
     }
+
     /* Cart Sidebar & Overlay */
     .cart-overlay {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(30,126,52,0.16); z-index: 100; display: none;
+      background: rgba(15,61,30,0.45); z-index: 100; display: none;
     }
     .cart-overlay.active { display: block; }
     .cart-sidebar {
-      position: fixed; top: 0; right: -100%; width: 350px; max-width: 96vw; height: 100%;
-      background: var(--white); box-shadow: -2px 0 16px 0 rgba(30,126,52,0.10);
-      z-index: 101; padding: 2rem 1.5rem; display: flex; flex-direction: column; transition: right .25s;
-      overflow-y: auto;
+      position: fixed; top: 0; right: -100%; width: 380px; max-width: 96vw; height: 100%;
+      background: var(--white); box-shadow: -8px 0 32px 0 rgba(15,61,30,0.18);
+      z-index: 101; padding: 1.6rem 1.4rem; display: flex; flex-direction: column; transition: right .25s;
+      overflow-y: auto; border-radius: 1.5rem 0 0 1.5rem;
     }
     .cart-sidebar.open { right: 0; }
     .cart-sidebar-header {
-      display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.4rem;
+      padding-bottom: 1.1rem; border-bottom: var(--border);
     }
-    .cart-sidebar-title { font-size: 1.2rem; font-weight: 900; color: var(--primary); }
+    .cart-sidebar-title { font-family: var(--display); font-size: 1.5rem; font-weight: 700; color: var(--primary-dark); }
     .cart-sidebar-close {
-      font-size: 1.8rem; color: var(--primary); cursor: pointer; background: none; border: none;
-      transition: color .2s;
+      font-size: 1.4rem; color: var(--primary-dark); cursor: pointer; background: var(--secondary); border: none;
+      width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      transition: background .2s, color .2s;
     }
-    .cart-items { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 1.2rem; }
+    .cart-sidebar-close:hover { background: var(--accent); }
+    .cart-items { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; }
     .cart-item {
-      display: flex; gap: 1rem; align-items: flex-start; border-bottom: 1px solid #f0f1f5; padding-bottom: 1rem;
+      display: flex; gap: 1rem; align-items: flex-start; border-bottom: var(--border); padding-bottom: 1rem;
     }
-    .cart-item-img { width: 60px; height: 60px; object-fit: contain; border-radius: .5rem; background: #f7f8fb; }
+    .cart-item-img { width: 64px; height: 64px; object-fit: contain; border-radius: .8rem; background: var(--secondary); padding: 4px; }
     .cart-item-details { flex: 1; }
-    .cart-item-title { font-size: 1rem; font-weight: 700; margin-bottom: .15rem; }
-    .cart-item-price { color: var(--primary); font-weight: 700; margin-bottom: .15rem; font-size: 0.95rem; }
+    .cart-item-title { font-size: .98rem; font-weight: 700; margin-bottom: .1rem; line-height: 1.3; }
+    .cart-item-price { color: var(--primary); font-weight: 700; margin-bottom: .15rem; font-size: 0.92rem; }
     .cart-item-qty {
-      display: flex; align-items: center; gap: .4rem; margin-top: .25rem;
+      display: flex; align-items: center; gap: .55rem; margin-top: .35rem; font-weight: 600;
     }
     .cart-item-qty-btn {
-      font-size: 1.15rem; background: var(--secondary); border-radius: .3rem; padding: 2px 8px; cursor: pointer;
-      color: var(--primary); border: 1px solid #dbe4f9; transition: background .2s, color .2s;
+      font-size: 1rem; background: var(--primary-soft); border-radius: 50%; width: 28px; height: 28px; cursor: pointer;
+      color: var(--primary-dark); border: none; transition: background .2s, color .2s;
+      display: inline-flex; align-items: center; justify-content: center;
     }
     .cart-item-qty-btn:hover { background: var(--primary); color: var(--white); }
     .cart-item-remove {
-      color: #e14d4d; font-size: 1.2rem; margin-left: .5rem; cursor: pointer; background: none; border: none; transition: color .2s;
+      color: #d64545; font-size: 1.15rem; margin-left: auto; cursor: pointer; background: none; border: none; transition: color .2s, transform .2s;
     }
+    .cart-item-remove:hover { transform: scale(1.15); }
     .cart-sidebar-footer {
-      margin-top: 2rem; display: flex; align-items: center; justify-content: space-between; font-weight: 700; font-size: 1.05rem;
+      margin-top: 1.4rem; padding-top: 1.2rem; border-top: var(--border);
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem; font-weight: 700; font-size: 1rem;
     }
     .cart-sidebar-footer .checkout-btn {
-      padding: 0.7rem 1.6rem; background: var(--primary); color: var(--white); border-radius: .5rem; border: none;
-      font-weight: 700; cursor: pointer; transition: background .2s;
+      padding: 0.8rem 1.6rem; background: var(--primary); color: var(--white); border-radius: 999px; border: none;
+      font-weight: 700; cursor: pointer; transition: background .2s, color .2s;
     }
-    .cart-sidebar-footer .checkout-btn:hover { background: var(--accent); color: var(--primary); }
+    .cart-sidebar-footer .checkout-btn:hover { background: var(--accent); color: var(--primary-dark); }
+
     /* Main Content */
-    main { max-width: 1170px; margin: 0 auto; padding: 2.5rem 1.25rem 3rem; }
+    main { max-width: 1200px; margin: 0 auto; padding: 1.5rem 1.25rem 2rem; }
+    main > section { margin-bottom: clamp(3.5rem, 8vw, 6rem); }
+    .section-head { max-width: 640px; margin-bottom: 2.2rem; }
+    .section-title {
+      font-family: var(--display); font-size: clamp(2rem, 4vw, 2.8rem); color: var(--primary-dark); font-weight: 700;
+      line-height: 1.1; letter-spacing: -.01em;
+    }
+    .section-sub { color: var(--muted); margin-top: .7rem; font-size: 1.02rem; }
+
+    /* Hero */
     .hero {
-      display: flex; align-items: center; justify-content: space-between; gap: 3rem;
-      background: linear-gradient(90deg, #e8f5e9 0%, #fffde7 100%);
-      border-radius: var(--radius); padding: 2rem 2.5rem; margin-bottom: 2.5rem;
-      box-shadow: var(--shadow); flex-wrap: wrap;
+      position: relative; overflow: hidden;
+      display: grid; grid-template-columns: 1.15fr .85fr; align-items: center; gap: 3rem;
+      background:
+        radial-gradient(circle at 88% 12%, rgba(251,192,45,.32) 0, rgba(251,192,45,0) 42%),
+        radial-gradient(circle at 0% 100%, rgba(255,255,255,.08) 0, rgba(255,255,255,0) 40%),
+        linear-gradient(135deg, #0f3d1e 0%, #1e7e34 100%);
+      color: var(--white);
+      border-radius: 2rem; padding: clamp(2rem, 5vw, 4.2rem) clamp(1.4rem, 5vw, 4rem) clamp(4rem, 7vw, 6rem);
+      box-shadow: var(--shadow); margin-bottom: 0 !important;
     }
-    .hero-content { flex: 1; min-width: 260px; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: .5rem; font-size: .8rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25); border-radius: 999px; padding: .4rem .95rem;
+      margin-bottom: 1.4rem; color: var(--accent-soft);
+    }
     .hero-title {
-      font-size: 2.6rem; font-weight: 900; color: var(--primary); line-height: 1.1; margin-bottom: 1.1rem;
+      font-family: var(--display); font-size: clamp(2.3rem, 5vw, 3.9rem); font-weight: 900; line-height: 1.04;
+      letter-spacing: -.02em; margin-bottom: 1.3rem;
     }
-    .hero-desc { color: #6c7a91; font-size: 1.12rem; margin-bottom: 1.6rem; max-width: 430px; }
-    .hero-btns { display: flex; gap: 1.1rem; }
+    .hero-title span { color: var(--accent); }
+    .hero-desc { color: #d4e9d9; font-size: 1.05rem; margin-bottom: 2rem; max-width: 520px; }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
     .btn-primary, .btn-secondary {
-      padding: 0.95rem 2.3rem; font-size: 1rem; border-radius: .7rem; font-weight: 900;
-      cursor: pointer; transition: background .2s, color .2s, box-shadow .2s; box-shadow: 0 2px 8px 0 rgba(30,126,52,0.08);
+      padding: 0.95rem 2rem; font-size: 1rem; border-radius: 999px; font-weight: 700; display: inline-flex; align-items: center;
+      cursor: pointer; transition: background .2s, color .2s, transform .2s, box-shadow .2s;
       outline: none; border: none;
     }
-    .btn-primary { background: var(--primary); color: var(--white); }
-    .btn-primary:hover { background: var(--accent); color: var(--primary);}
-    .btn-secondary { background: var(--white); color: var(--primary); border: 2px solid var(--primary);}
-    .btn-secondary:hover { background: var(--primary); color: var(--white);}
-    .hero-img-container { min-width: 220px; flex: 1; display: flex; justify-content: flex-end; align-items: center;}
-    .hero-img {
-      width: 320px; max-width: 100%; border-radius: var(--radius); box-shadow: 0 2px 24px 0 rgba(30,126,52,.11); background: #f2f8ff; object-fit: contain;
+    .btn-primary { background: var(--accent); color: var(--primary-dark); box-shadow: 0 10px 22px -8px rgba(251,192,45,.7); }
+    .btn-primary:hover { background: var(--white); transform: translateY(-2px); }
+    .btn-secondary { background: transparent; color: var(--white); border: 2px solid rgba(255,255,255,.55); }
+    .btn-secondary:hover { background: var(--white); color: var(--primary-dark); border-color: var(--white); }
+    .hero-img-container { position: relative; display: flex; justify-content: center; align-items: center; }
+    .hero-art {
+      width: min(100%, 360px); aspect-ratio: 4 / 5; background: var(--white); border-radius: 12rem 12rem 2rem 2rem;
+      display: flex; align-items: center; justify-content: center; padding: 2.4rem;
+      box-shadow: 0 30px 60px -20px rgba(0,0,0,.45), 0 0 0 10px rgba(255,255,255,.12);
     }
+    .hero-img { width: 100%; height: 100%; object-fit: contain; border-radius: 0; }
+    .hero-chip {
+      position: absolute; display: flex; align-items: center; gap: .5rem; background: var(--white); color: var(--primary-dark);
+      font-weight: 700; font-size: .88rem; padding: .6rem 1rem; border-radius: 999px; box-shadow: 0 12px 26px -10px rgba(0,0,0,.4);
+    }
+    .hero-chip i { color: var(--primary); font-size: 1.1rem; }
+    .chip-a { top: 12%; left: -4%; }
+    .chip-b { bottom: 14%; right: -3%; }
+
+    /* Perks strip */
+    .perks {
+      position: relative; z-index: 2; display: grid; grid-template-columns: repeat(4, 1fr);
+      background: var(--white); border: var(--border); border-radius: 1.5rem; box-shadow: var(--shadow);
+      margin: -3rem clamp(.5rem, 4vw, 3rem) 0;
+    }
+    .perk { display: flex; gap: .9rem; align-items: flex-start; padding: 1.5rem 1.4rem; }
+    .perk + .perk { border-left: 1px dashed #d8d3bd; }
+    .perk-icon {
+      flex: none; width: 46px; height: 46px; border-radius: 14px; background: var(--primary-soft); color: var(--primary);
+      display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
+    }
+    .perk-title { font-weight: 700; font-size: 1rem; line-height: 1.3; margin-bottom: .2rem; }
+    .perk-desc { color: var(--muted); font-size: .88rem; line-height: 1.45; }
+
     /* Products */
-    .section-title {
-      font-size: 2.1rem; color: var(--primary); font-weight: 900; text-align: center; margin-bottom: 2rem; margin-top: 1rem;
-    }
     .products-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; margin-bottom: 3rem;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1.5rem;
     }
     .product-card {
-      background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.5rem 1.1rem;
-      display: flex; flex-direction: column; align-items: center; transition: transform .18s, box-shadow .2s; position: relative;
+      background: var(--white); border-radius: var(--radius); border: var(--border); overflow: hidden;
+      display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s; position: relative;
     }
-    .product-card:hover { transform: translateY(-6px) scale(1.03); box-shadow: 0 12px 32px 0 rgba(30,126,52,.12);}
-    .product-img { width: 120px; height: 120px; object-fit: contain; margin-bottom: 1.1rem; background: #f7f8fb; border-radius: .5rem;}
-    .product-name { font-weight: 900; font-size: 1.07rem; text-align: center; margin-bottom: .4rem;}
-    .product-desc { font-size: 0.97rem; color: #6c7a91; margin-bottom: 0.7rem; text-align: center;}
-    .product-stock { font-size: 0.95rem; margin-bottom: 0.3rem; color: var(--primary);}
-    .product-price { font-weight: 700; font-size: 1.1rem; color: var(--primary); margin-bottom: 1rem;}
+    .product-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+    .product-media { background: linear-gradient(160deg, var(--primary-soft), var(--accent-soft)); padding: 1.4rem; }
+    .product-img { width: 100%; height: 150px; object-fit: contain; border-radius: 0; }
+    .product-body { padding: 1.1rem 1.2rem 1.3rem; display: flex; flex-direction: column; flex: 1; }
+    .product-name { font-weight: 700; font-size: 1.05rem; line-height: 1.3; margin-bottom: .35rem; }
+    .product-desc { font-size: .9rem; color: var(--muted); margin-bottom: 1rem; flex: 1; line-height: 1.5; }
+    .product-foot { display: flex; align-items: center; justify-content: space-between; gap: .6rem; flex-wrap: wrap; }
+    .product-price { font-family: var(--display); font-weight: 700; font-size: 1.3rem; color: var(--primary-dark); }
     .product-add {
-      background: var(--primary); color: var(--white); border-radius: .4rem; padding: 0.65rem 1.5rem; font-weight: 900; cursor: pointer; font-size: 1rem; border: none;
-      transition: background .2s; display: flex; align-items: center; gap: .45rem;
+      background: var(--primary); color: var(--white); border-radius: 999px; padding: 0.55rem 1.05rem; font-weight: 600; cursor: pointer; font-size: .88rem; border: none;
+      transition: background .2s, color .2s; display: flex; align-items: center; gap: .4rem;
     }
-    .product-add:hover { background: var(--accent); color: var(--primary);}
+    .product-add:hover { background: var(--accent); color: var(--primary-dark); }
     .product-badge {
-      position: absolute; top: 1.2rem; right: 1.2rem; background: var(--accent); color: var(--white); font-weight: 700; font-size: .92rem;
-      padding: 0.22rem 0.8rem; border-radius: .5rem; letter-spacing: 1px; box-shadow: 0 2px 8px 0 rgba(243,200,110,0.08);
+      position: absolute; top: .9rem; left: .9rem; z-index: 1; background: var(--white); color: var(--primary-dark); font-weight: 700; font-size: .75rem;
+      padding: 0.25rem 0.75rem; border-radius: 999px; letter-spacing: .04em; box-shadow: 0 4px 10px -4px rgba(15,61,30,.3);
     }
-    /* Info Sections */
-    .info-sections {
-      display: flex; flex-wrap: wrap; gap: 2rem; margin-bottom: 2.5rem; justify-content: center;
+
+    /* About */
+    .about { display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+    .about-story .display { font-size: clamp(2.1rem, 4vw, 3rem); margin-bottom: 1.2rem; }
+    .about-story p { color: var(--muted); font-size: 1.06rem; margin-bottom: 1.6rem; }
+    .about-goal {
+      display: flex; gap: 1rem; background: var(--accent-soft); border-left: 5px solid var(--accent);
+      border-radius: 0 1rem 1rem 0; padding: 1.3rem 1.4rem;
     }
-    .info-card {
-      background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.6rem 1.2rem; min-width: 240px; flex: 1 1 240px;
-      display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 370px;
+    .about-goal i { font-size: 1.8rem; color: var(--primary); flex: none; }
+    .about-goal strong { display: block; font-family: var(--display); font-size: 1.15rem; color: var(--primary-dark); margin-bottom: .25rem; }
+    .about-goal p { margin: 0; font-size: .96rem; color: #4d5a4f; }
+    .about-values {
+      background: var(--white); border: var(--border); border-radius: 1.75rem; padding: 2rem 1.8rem; box-shadow: var(--shadow);
     }
-    .info-icon { font-size: 2.3rem; color: var(--primary); margin-bottom: 0.7rem;}
-    .info-title { font-size: 1.15rem; font-weight: 900; margin-bottom: .4rem;}
-    .info-desc { color: #6c7a91; font-size: 0.97rem;}
+    .about-values h3 { font-family: var(--display); font-size: 1.4rem; color: var(--primary-dark); margin-bottom: 1rem; }
+    .about-values ol { list-style: none; }
+    .about-values li { display: flex; gap: 1rem; padding: 1.1rem 0; border-top: 1px solid #efebda; }
+    .about-values .num {
+      flex: none; font-family: var(--display); font-size: 1.6rem; font-weight: 900; color: var(--accent); line-height: 1; min-width: 2.2rem;
+    }
+    .about-values li strong { display: block; color: var(--primary-dark); margin-bottom: .15rem; }
+    .about-values li p { color: var(--muted); font-size: .95rem; line-height: 1.5; }
+
+    /* Services */
+    .services {
+      background: var(--primary-dark); color: var(--white); border-radius: 2rem;
+      padding: clamp(2rem, 5vw, 3.5rem); position: relative; overflow: hidden;
+    }
+    .services::after {
+      content: ''; position: absolute; right: -80px; top: -80px; width: 260px; height: 260px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(251,192,45,.35), rgba(251,192,45,0) 70%);
+    }
+    .services .eyebrow { color: var(--accent); }
+    .services h2 { font-family: var(--display); font-size: clamp(1.8rem, 3.5vw, 2.5rem); margin-bottom: 2rem; line-height: 1.1; }
+    .services-row { display: grid; grid-template-columns: repeat(3, 1fr); position: relative; z-index: 1; }
+    .service { padding: 0 2rem; }
+    .service:first-child { padding-left: 0; }
+    .service + .service { border-left: 1px solid rgba(255,255,255,.18); }
+    .service-num { font-family: var(--display); font-size: 3rem; font-weight: 900; color: var(--accent); line-height: 1; margin-bottom: .8rem; opacity: .95; }
+    .service-title { font-weight: 700; font-size: 1.15rem; margin-bottom: .4rem; display: flex; align-items: center; gap: .5rem; }
+    .service-desc { color: #c5dcc9; font-size: .95rem; }
+
+    /* Testimonials */
+    .quotes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; align-items: start; }
+    .quote {
+      background: var(--white); border: var(--border); border-radius: 1.75rem; padding: 2.2rem 2rem 1.8rem; position: relative; box-shadow: var(--shadow);
+    }
+    .quote:nth-child(2) { margin-top: 3rem; background: var(--primary-soft); border-color: #cfe5d3; }
+    .quote > i { position: absolute; top: -1.2rem; left: 1.8rem; width: 46px; height: 46px; border-radius: 50%; background: var(--accent);
+      color: var(--primary-dark); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+    .quote blockquote { font-family: var(--display); font-size: 1.25rem; line-height: 1.45; color: var(--primary-dark); margin-bottom: 1.4rem; font-weight: 600; }
+    .quote figcaption { display: flex; align-items: center; gap: .8rem; }
+    .avatar {
+      width: 42px; height: 42px; border-radius: 50%; background: var(--primary); color: var(--white); font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .quote figcaption strong { display: block; font-size: .95rem; line-height: 1.2; }
+    .quote figcaption small { color: var(--muted); font-size: .85rem; }
+
+    /* FAQ */
+    .faq { display: grid; grid-template-columns: .8fr 1.5fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+    .faq-intro { position: sticky; top: 110px; }
+    .faq-intro .display { font-size: clamp(2rem, 4vw, 2.8rem); margin-bottom: .8rem; }
+    .faq-intro p { color: var(--muted); }
+    .faq-list { display: flex; flex-direction: column; gap: .8rem; }
+    .faq-item { background: var(--white); border: var(--border); border-radius: 1.1rem; transition: box-shadow .2s; }
+    .faq-item[open] { box-shadow: var(--shadow); border-color: #cfe5d3; }
+    .faq-item summary {
+      cursor: pointer; list-style: none; padding: 1.15rem 1.4rem; font-weight: 700; display: flex; align-items: center;
+      justify-content: space-between; gap: 1rem;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: '+'; flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--primary-soft); color: var(--primary);
+      display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 500; transition: transform .2s, background .2s;
+    }
+    .faq-item[open] summary::after { content: '–'; background: var(--accent); color: var(--primary-dark); }
+    .faq-item p { padding: 0 1.4rem 1.3rem; color: var(--muted); }
+
+    /* Contact */
+    .contact { display: grid; grid-template-columns: 1.15fr 1fr; border-radius: 2rem; overflow: hidden; box-shadow: var(--shadow); }
+    .contact-details { background: var(--primary); color: var(--white); padding: clamp(1.8rem, 4vw, 3rem); }
+    .contact-details .eyebrow { color: var(--accent); }
+    .contact-details h2 { font-family: var(--display); font-size: clamp(1.8rem, 3.5vw, 2.4rem); margin-bottom: 1.6rem; line-height: 1.1; }
+    .contact-list { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; }
+    .contact-list li { display: flex; gap: 1rem; align-items: flex-start; }
+    .contact-list i {
+      flex: none; width: 42px; height: 42px; border-radius: 12px; background: rgba(255,255,255,.14); color: var(--accent);
+      display: flex; align-items: center; justify-content: center; font-size: 1.25rem;
+    }
+    .contact-list strong { display: block; font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; color: #bfe0c6; margin-bottom: .1rem; }
+    .contact-list a { color: var(--accent); font-weight: 600; }
+    .contact-list a:hover { color: var(--white); }
+    .contact-msg { background: var(--white); padding: clamp(1.8rem, 4vw, 3rem); display: flex; flex-direction: column; justify-content: center; }
+    .contact-msg h3 { font-family: var(--display); font-size: 1.7rem; color: var(--primary-dark); margin-bottom: .8rem; }
+    .contact-msg p { color: var(--muted); margin-bottom: 1.6rem; }
+    .contact-msg .btn-primary { background: var(--primary); color: var(--white); align-self: flex-start; box-shadow: none; }
+    .contact-msg .btn-primary:hover { background: var(--accent); color: var(--primary-dark); }
+
     /* Policy Sections */
-    .policy-sections {
-      display: flex; flex-wrap: wrap; gap: 2rem; margin: 2rem 0; justify-content: center;
-    }
+    .policy-sections { border-top: 2px solid var(--primary-dark); }
+    .policy-sections-title { font-family: var(--display); font-size: 1.5rem; color: var(--primary-dark); padding: 1.2rem 0 .6rem; }
     .policy-card {
-      background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 2rem 1.5rem; min-width: 260px; flex: 1 1 260px;
-      max-width: 400px; text-align: left; display: flex; flex-direction: column;
+      display: grid; grid-template-columns: 220px 1fr auto; gap: 1.5rem; align-items: center;
+      padding: 1.3rem 0; border-bottom: 1px solid #e3ddc7;
     }
-    .policy-title { font-size: 1.25rem; font-weight: 900; margin-bottom: .7rem; color: var(--primary);}
-    .policy-body { color: #6c7a91; font-size: 1rem; line-height: 1.7;}
+    .policy-title { font-family: var(--display); font-size: 1.2rem; font-weight: 700; color: var(--primary-dark); }
+    .policy-body { color: var(--muted); font-size: .95rem; line-height: 1.55; }
+    .policy-link {
+      display: inline-flex; align-items: center; gap: .4rem; font-weight: 700; font-size: .9rem; color: var(--primary);
+      border: 1.5px solid var(--primary); border-radius: 999px; padding: .45rem 1rem; transition: background .2s, color .2s; white-space: nowrap;
+    }
+    .policy-link:hover { background: var(--primary); color: var(--white); }
+
     /* Footer */
     .footer {
-      background: var(--primary); color: var(--white); padding: 3rem 0 1.2rem; margin-top: 3rem; border-radius: var(--radius) var(--radius) 0 0;
+      background: var(--primary-dark); color: var(--white); padding: 3.5rem 0 1.4rem; margin-top: 3rem; border-radius: 2rem 2rem 0 0;
     }
     .footer-container {
-      max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 2.2rem; justify-content: space-between; align-items: flex-start; padding: 0 2rem;
+      max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 2.2rem; padding: 0 2rem;
     }
-    .footer-brand { flex: 1 1 240px; margin-bottom: 2rem;}
     .footer-logo {
-      display: flex; align-items: center; font-size: 1.4rem; font-weight: 900; gap: .6rem; margin-bottom: 0.6rem; color: var(--accent);
+      display: flex; align-items: center; font-family: var(--display); font-size: 1.4rem; font-weight: 700; gap: .6rem; margin-bottom: 0.8rem; color: var(--white);
     }
-    .footer-logo img { width: 34px; height: 34px; }
-    .footer-desc { color: #fbc02d; font-size: 1.01rem; margin-bottom: .8rem;}
-    .footer-links-group { flex: 1 1 160px; margin-bottom: 2rem;}
-    .footer-links-title { font-size: 1.1rem; font-weight: 900; margin-bottom: .45rem; letter-spacing: .5px;}
-    .footer-links { display: flex; flex-direction: column; gap: .4rem;}
-    .footer-link { color: #fff2ef; font-size: .99rem; transition: color .2s; opacity: .94;}
-    .footer-link:hover { color: var(--accent);}
-    .footer-bottom { text-align: center; font-size: .97rem; color: #fff2ef; margin-top: 2rem; opacity: .85;}
-    .footer-bottom a { color: #fff; font-weight: 700; text-decoration: underline; transition: color .2s;}
-    .footer-bottom a:hover { color: var(--accent);}
+    .footer-logo img { width: 38px; height: 38px; border-radius: 50%; }
+    .footer-desc { color: #bfe0c6; font-size: .95rem; line-height: 1.8; }
+    .footer-desc a { color: var(--accent); }
+    .footer-links-title { font-size: .8rem; font-weight: 700; margin-bottom: .9rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+    .footer-links { display: flex; flex-direction: column; gap: .55rem; }
+    .footer-link { color: #d4e9d9; font-size: .96rem; transition: color .2s; }
+    .footer-link:hover { color: var(--accent); }
+    .footer-bottom {
+      max-width: 1200px; margin: 2.5rem auto 0; padding: 1.3rem 2rem 0; border-top: 1px solid rgba(255,255,255,.14);
+      text-align: center; font-size: .9rem; color: #a9cbb0;
+    }
+
     /* Responsive Design */
-    @media (max-width: 1100px) {
-      .hero { flex-direction: column; text-align: center; }
-      .hero-content, .hero-img-container { justify-content: center; }
-      .hero-img { margin: 1.5rem auto 0 auto; }
+    @media (max-width: 1000px) {
+      .hero { grid-template-columns: 1fr; text-align: center; }
+      .hero-desc { margin-left: auto; margin-right: auto; }
+      .hero-btns { justify-content: center; }
+      .hero-art { width: min(100%, 300px); }
+      .chip-a { left: 8%; }
+      .chip-b { right: 8%; }
+      .perks { grid-template-columns: repeat(2, 1fr); }
+      .perk:nth-child(3) { border-left: none; }
+      .perk:nth-child(n+3) { border-top: 1px dashed #d8d3bd; }
+      .about, .faq, .contact { grid-template-columns: 1fr; }
+      .faq-intro { position: static; }
+      .footer-container { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 900px) {
-      .nav-list { gap: 1.3rem; }
-      .footer-container { flex-direction: column; gap: 2.8rem; align-items: flex-start; }
-    }
-    @media (max-width: 776px) {
-      .nav { padding: 1rem 1rem; }
-      .main { padding: 1.5rem .5rem 2rem; }
-      .products-grid, .info-sections, .policy-sections { gap: 1.1rem; }
-      .footer-container { padding: 0 1rem; }
-    }
-    @media (max-width: 700px) {
+      .nav { padding: .8rem 1.25rem; }
       .nav-list {
-        position: fixed; top: 0; right: -100vw; width: 80vw; height: 100vh; background: var(--primary);
-        flex-direction: column; gap: 2rem; padding-top: 5rem; z-index: 120; transition: right .25s;
-        box-shadow: -2px 0 18px 0 rgba(30,126,52,0.09);
+        position: fixed; top: 0; right: -100vw; width: min(84vw, 340px); height: 100vh; background: var(--white);
+        flex-direction: column; align-items: flex-start; gap: 1.6rem; padding: 5.5rem 2rem 2rem; z-index: 120; transition: right .25s;
+        box-shadow: -8px 0 32px 0 rgba(15,61,30,0.2); border-radius: 1.5rem 0 0 1.5rem;
       }
       .nav-list.open { right: 0; }
+      .nav-link { font-size: 1.15rem; }
       .nav-toggle { display: block; }
-      .nav-close {
-        display: none;
-      }
       .nav-list .nav-close {
-        display: block;
-        position: absolute;
-        top: 1.1rem;
-        right: 1.6rem;
-        background: none;
-        border: none;
-        font-size: 2rem;
-        color: var(--accent);
-        cursor: pointer;
-        z-index: 999;
+        display: flex; align-items: center; justify-content: center;
+        position: absolute; top: 1.1rem; right: 1.3rem; width: 40px; height: 40px; border-radius: 50%;
+        background: var(--secondary); border: none; font-size: 1.5rem; color: var(--primary-dark); cursor: pointer; z-index: 999;
       }
+    }
+    @media (max-width: 760px) {
+      .topbar span + span { display: none; }
+      .services-row { grid-template-columns: 1fr; gap: 1.8rem; }
+      .service, .service:first-child { padding: 0; }
+      .service + .service { border-left: none; border-top: 1px solid rgba(255,255,255,.18); padding-top: 1.8rem; }
+      .quotes { grid-template-columns: 1fr; gap: 2.2rem; }
+      .quote:nth-child(2) { margin-top: 0; }
+      .policy-card { grid-template-columns: 1fr; gap: .6rem; }
+      .policy-link { justify-self: start; margin-top: .3rem; }
     }
     @media (max-width: 600px) {
-      .hero { padding: 1.2rem .7rem; }
-      .policy-card { padding: 1.5rem .7rem; }
-      .footer { padding: 2rem 0 1.1rem; }
+      main { padding: 1rem .9rem 1.5rem; }
+      .hero { border-radius: 1.5rem; }
+      .chip-a { left: 0; }
+      .chip-b { right: 0; }
+      .perks { grid-template-columns: 1fr; margin-inline: .3rem; }
+      .perk + .perk { border-left: none; border-top: 1px dashed #d8d3bd; }
+      .perk:nth-child(3) { border-top: 1px dashed #d8d3bd; }
+      .products-grid { grid-template-columns: repeat(2, 1fr); gap: .9rem; }
+      .product-media { padding: 1rem .6rem; }
+      .product-img { height: 110px; }
+      .product-body { padding: .9rem .85rem 1rem; }
+      .product-desc { font-size: .82rem; }
+      .footer-container { grid-template-columns: 1fr; padding: 0 1.25rem; }
+      .footer { padding: 2.5rem 0 1.1rem; }
     }
     @media (max-width: 430px) {
-      .cart-sidebar { width: 98vw; padding: 1.2rem .6rem; }
-      .footer-logo img { width: 28px; height: 28px; }
+      .cart-sidebar { width: 98vw; padding: 1.2rem .9rem; }
+      .nav-logo { font-size: 1.2rem; }
+      .nav-logo img { width: 36px; height: 36px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; }
     }
   </style>
 </head>
 <body>
+  <div class="topbar">
+    <span><i class="ri-time-line"></i>Mon–Sat 8:00 AM – 8:00 PM · Sun 8:00 AM – 5:00 PM</span>
+    <span><i class="ri-truck-line"></i>Home delivery across Muntinlupa</span>
+  </div>
   <header class="header" id="header">
     <nav class="nav">
       <a href="index.html" class="nav-logo">
@@ -334,7 +535,8 @@
     <!-- Hero Section -->
     <section class="hero" id="home">
       <div class="hero-content">
-        <h1 class="hero-title">Welcome to <span style="color:var(--accent)">Reyona Grocery Hub!</span></h1>
+        <span class="hero-eyebrow"><i class="ri-map-pin-2-fill"></i> Filipino Supermarket · Muntinlupa</span>
+        <h1 class="hero-title">Welcome to <span>Reyona Grocery Hub!</span></h1>
         <div class="hero-desc">
           Para sa inyong convenience, nandito kami sa puso ng Muntinlupa para magbigay ng sariwa at kalidad na produkto para sa bawat pamilya. From fresh produce to pantry essentials, we’ve got everything you need under one roof.<br><br>
           Mahal kami ng mga customer dahil sa aming maasahang serbisyo at abot-kayang presyo. Halina at maranasan ang shopping experience na swak sa bawat pamilya!
@@ -345,253 +547,332 @@
         </div>
       </div>
       <div class="hero-img-container">
-        <img src="image/LOGO.png" alt="Fresh Filipino Grocery" class="hero-img" />
+        <div class="hero-art">
+          <img src="image/LOGO.png" alt="Fresh Filipino Grocery" class="hero-img" />
+        </div>
+        <div class="hero-chip chip-a"><i class="ri-leaf-line"></i> Fresh daily</div>
+        <div class="hero-chip chip-b"><i class="ri-truck-line"></i> Home delivery</div>
       </div>
     </section>
 
     <!-- Why Choose Us -->
-    <section class="info-sections">
-      <div class="info-card">
-        <div class="info-icon"><i class="ri-leaf-line"></i></div>
-        <div class="info-title">Fresh & Local</div>
-        <div class="info-desc">Sariwa at locally sourced products araw-araw.</div>
+    <section class="perks">
+      <div class="perk">
+        <div class="perk-icon"><i class="ri-leaf-line"></i></div>
+        <div>
+          <div class="perk-title">Fresh & Local</div>
+          <div class="perk-desc">Sariwa at locally sourced products araw-araw.</div>
+        </div>
       </div>
-      <div class="info-card">
-        <div class="info-icon"><i class="ri-user-heart-line"></i></div>
-        <div class="info-title">Friendly Staff</div>
-        <div class="info-desc">Maasahan at magalang na serbisyo.</div>
+      <div class="perk">
+        <div class="perk-icon"><i class="ri-user-heart-line"></i></div>
+        <div>
+          <div class="perk-title">Friendly Staff</div>
+          <div class="perk-desc">Maasahan at magalang na serbisyo.</div>
+        </div>
       </div>
-      <div class="info-card">
-        <div class="info-icon"><i class="ri-money-dollar-circle-line"></i></div>
-        <div class="info-title">Affordable Prices</div>
-        <div class="info-desc">Abot-kayang presyo para sa araw-araw.</div>
+      <div class="perk">
+        <div class="perk-icon"><i class="ri-money-dollar-circle-line"></i></div>
+        <div>
+          <div class="perk-title">Affordable Prices</div>
+          <div class="perk-desc">Abot-kayang presyo para sa araw-araw.</div>
+        </div>
       </div>
-      <div class="info-card">
-        <div class="info-icon"><i class="ri-map-pin-line"></i></div>
-        <div class="info-title">Convenient Location</div>
-        <div class="info-desc">Barangay Alabang, Muntinlupa – madaling puntahan.</div>
+      <div class="perk">
+        <div class="perk-icon"><i class="ri-map-pin-line"></i></div>
+        <div>
+          <div class="perk-title">Convenient Location</div>
+          <div class="perk-desc">Barangay Alabang, Muntinlupa – madaling puntahan.</div>
+        </div>
       </div>
     </section>
 
     <!-- Products -->
-    <section id="shop">
-      <h2 class="section-title">Shop Groceries</h2>
+    <section id="shop" style="margin-top: clamp(3.5rem, 8vw, 6rem);">
+      <div class="section-head">
+        <span class="eyebrow">Our Products</span>
+        <h2 class="section-title">Shop Groceries</h2>
+        <p class="section-sub">From fresh produce to pantry staples — add your favorites to the cart and check out in a few taps.</p>
+      </div>
       <div class="products-grid" id="products-grid">
         <div class="product-card" data-id="1">
           <span class="product-badge">Qty: 10</span>
-          <img src="image/ 1.png" alt="Fresh Mangoes" class="product-img" />
-          <div class="product-name">Fresh Mangoes</div>
-          <div class="product-desc">Masarap at bagong pitas na mangga mula Luzon.</div>
-          <div class="product-price">₱120.99</div>
-          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+          <div class="product-media"><img src="image/PICTURES 1.png" alt="Fresh Mangoes" class="product-img" /></div>
+          <div class="product-body">
+            <div class="product-name">Fresh Mangoes</div>
+            <div class="product-desc">Masarap at bagong pitas na mangga mula Luzon.</div>
+            <div class="product-foot">
+              <div class="product-price">₱120.99</div>
+              <button class="product-add"><i class="ri-shopping-cart-2-line"></i> <span>Add to Cart</span></button>
+            </div>
+          </div>
         </div>
         <div class="product-card" data-id="2">
           <span class="product-badge">Qty: 5</span>
-          <img src="image/ 2.png" alt="Premium Rice 5kg" class="product-img" />
-          <div class="product-name">Premium Rice 5kg</div>
-          <div class="product-desc">High-quality local rice. Malambot, masarap, at abot-kaya.</div>
-          <div class="product-price">₱285.00</div>
-          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+          <div class="product-media"><img src="image/PICTURES 2.png" alt="Premium Rice 5kg" class="product-img" /></div>
+          <div class="product-body">
+            <div class="product-name">Premium Rice 5kg</div>
+            <div class="product-desc">High-quality local rice. Malambot, masarap, at abot-kaya.</div>
+            <div class="product-foot">
+              <div class="product-price">₱285.00</div>
+              <button class="product-add"><i class="ri-shopping-cart-2-line"></i> <span>Add to Cart</span></button>
+            </div>
+          </div>
         </div>
         <div class="product-card" data-id="3">
           <span class="product-badge">Qty: 8</span>
-          <img src="image/ 3.png" alt="Chicken Drumsticks" class="product-img" />
-          <div class="product-name">Chicken Drumsticks</div>
-          <div class="product-desc">Fresh, tender, and ready for your favorite ulam.</div>
-          <div class="product-price">₱199.50</div>
-          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+          <div class="product-media"><img src="image/PICTURES 3.png" alt="Chicken Drumsticks" class="product-img" /></div>
+          <div class="product-body">
+            <div class="product-name">Chicken Drumsticks</div>
+            <div class="product-desc">Fresh, tender, and ready for your favorite ulam.</div>
+            <div class="product-foot">
+              <div class="product-price">₱199.50</div>
+              <button class="product-add"><i class="ri-shopping-cart-2-line"></i> <span>Add to Cart</span></button>
+            </div>
+          </div>
         </div>
         <div class="product-card" data-id="4">
           <span class="product-badge">Qty: 15</span>
-          <img src="image/ 4.png" alt="Eggs (1 Dozen)" class="product-img" />
-          <div class="product-name">Eggs (1 Dozen)</div>
-          <div class="product-desc">Farm-fresh eggs for breakfast, baking, or snacks.</div>
-          <div class="product-price">₱98.00</div>
-          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+          <div class="product-media"><img src="image/PICTURES 4.png" alt="Eggs (1 Dozen)" class="product-img" /></div>
+          <div class="product-body">
+            <div class="product-name">Eggs (1 Dozen)</div>
+            <div class="product-desc">Farm-fresh eggs for breakfast, baking, or snacks.</div>
+            <div class="product-foot">
+              <div class="product-price">₱98.00</div>
+              <button class="product-add"><i class="ri-shopping-cart-2-line"></i> <span>Add to Cart</span></button>
+            </div>
+          </div>
         </div>
         <div class="product-card" data-id="5">
           <span class="product-badge">Qty: 12</span>
-          <img src="image/ 5.png" alt="Banana (Lakatan)" class="product-img" />
-          <div class="product-name">Banana (Lakatan)</div>
-          <div class="product-desc">Sariwang lakatan na saging, perfect pang-meryenda.</div>
-          <div class="product-price">₱55.00</div>
-          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+          <div class="product-media"><img src="image/PICTURES 5.png" alt="Banana (Lakatan)" class="product-img" /></div>
+          <div class="product-body">
+            <div class="product-name">Banana (Lakatan)</div>
+            <div class="product-desc">Sariwang lakatan na saging, perfect pang-meryenda.</div>
+            <div class="product-foot">
+              <div class="product-price">₱55.00</div>
+              <button class="product-add"><i class="ri-shopping-cart-2-line"></i> <span>Add to Cart</span></button>
+            </div>
+          </div>
         </div>
         <div class="product-card" data-id="6">
           <span class="product-badge">Qty: 7</span>
-          <img src="image/ 6.png" alt="Tilapia (Fresh)" class="product-img" />
-          <div class="product-name">Tilapia (Fresh)</div>
-          <div class="product-desc">Fresh tilapia, ready to cook for Filipino dishes.</div>
-          <div class="product-price">₱99.90</div>
-          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+          <div class="product-media"><img src="image/PICTURES 6.png" alt="Tilapia (Fresh)" class="product-img" /></div>
+          <div class="product-body">
+            <div class="product-name">Tilapia (Fresh)</div>
+            <div class="product-desc">Fresh tilapia, ready to cook for Filipino dishes.</div>
+            <div class="product-foot">
+              <div class="product-price">₱99.90</div>
+              <button class="product-add"><i class="ri-shopping-cart-2-line"></i> <span>Add to Cart</span></button>
+            </div>
+          </div>
         </div>
         <div class="product-card" data-id="7">
           <span class="product-badge">Qty: 20</span>
-          <img src="image/ 7.png" alt="Instant Noodles (Pack)" class="product-img" />
-          <div class="product-name">Instant Noodles (Pack)</div>
-          <div class="product-desc">Masarap at mabilis lutuin, perfect for rainy days.</div>
-          <div class="product-price">₱13.00</div>
-          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+          <div class="product-media"><img src="image/PICTURES 7.png" alt="Instant Noodles (Pack)" class="product-img" /></div>
+          <div class="product-body">
+            <div class="product-name">Instant Noodles (Pack)</div>
+            <div class="product-desc">Masarap at mabilis lutuin, perfect for rainy days.</div>
+            <div class="product-foot">
+              <div class="product-price">₱13.00</div>
+              <button class="product-add"><i class="ri-shopping-cart-2-line"></i> <span>Add to Cart</span></button>
+            </div>
+          </div>
         </div>
         <div class="product-card" data-id="8">
           <span class="product-badge">Qty: 9</span>
-          <img src="image/ 8.png" alt="Coffee 3-in-1 (10 Sachets)" class="product-img" />
-          <div class="product-name">Coffee 3-in-1 (10 Sachets)</div>
-          <div class="product-desc">Delicious Filipino instant coffee for your mornings.</div>
-          <div class="product-price">₱54.00</div>
-          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+          <div class="product-media"><img src="image/PICTURES 8.png" alt="Coffee 3-in-1 (10 Sachets)" class="product-img" /></div>
+          <div class="product-body">
+            <div class="product-name">Coffee 3-in-1 (10 Sachets)</div>
+            <div class="product-desc">Delicious Filipino instant coffee for your mornings.</div>
+            <div class="product-foot">
+              <div class="product-price">₱54.00</div>
+              <button class="product-add"><i class="ri-shopping-cart-2-line"></i> <span>Add to Cart</span></button>
+            </div>
+          </div>
         </div>
         <div class="product-card" data-id="9">
           <span class="product-badge">Qty: 6</span>
-          <img src="image/ 9.png" alt="Laundry Detergent (Big)" class="product-img" />
-          <div class="product-name">Laundry Detergent (Big)</div>
-          <div class="product-desc">Malinis at mabango, good for large families.</div>
-          <div class="product-price">₱165.00</div>
-          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+          <div class="product-media"><img src="image/PICTURES 9.png" alt="Laundry Detergent (Big)" class="product-img" /></div>
+          <div class="product-body">
+            <div class="product-name">Laundry Detergent (Big)</div>
+            <div class="product-desc">Malinis at mabango, good for large families.</div>
+            <div class="product-foot">
+              <div class="product-price">₱165.00</div>
+              <button class="product-add"><i class="ri-shopping-cart-2-line"></i> <span>Add to Cart</span></button>
+            </div>
+          </div>
         </div>
         <div class="product-card" data-id="10">
           <span class="product-badge">Qty: 18</span>
-          <img src="image/ 10.png" alt="Canned Sardines (Pack)" class="product-img" />
-          <div class="product-name">Canned Sardines (Pack)</div>
-          <div class="product-desc">Filipino staple, easy to prepare and delicious.</div>
-          <div class="product-price">₱32.00</div>
-          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+          <div class="product-media"><img src="image/PICTURES 10.png" alt="Canned Sardines (Pack)" class="product-img" /></div>
+          <div class="product-body">
+            <div class="product-name">Canned Sardines (Pack)</div>
+            <div class="product-desc">Filipino staple, easy to prepare and delicious.</div>
+            <div class="product-foot">
+              <div class="product-price">₱32.00</div>
+              <button class="product-add"><i class="ri-shopping-cart-2-line"></i> <span>Add to Cart</span></button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- About Us -->
-    <section class="info-sections" id="about">
-      <div class="info-card">
-        <div class="info-icon"><i class="ri-store-2-line"></i></div>
-        <div class="info-title">Our Story</div>
-        <div class="info-desc">
+    <section class="about" id="about">
+      <div class="about-story">
+        <span class="eyebrow">About Us</span>
+        <h2 class="display">Our Story</h2>
+        <p>
           Reyona Grocery Hub started with a simple mission: to bring quality groceries closer to every home in Muntinlupa. Established by Golfo Reynalyn Quito, our hub has grown into a trusted supermarket serving thousands of satisfied customers across NCR.
+        </p>
+        <div class="about-goal">
+          <i class="ri-flag-2-line"></i>
+          <div>
+            <strong>Our Goal</strong>
+            <p>To be the preferred grocery destination in Muntinlupa, providing convenient access to quality food products while maintaining excellent service and value.</p>
+          </div>
         </div>
       </div>
-      <div class="info-card">
-        <div class="info-icon"><i class="ri-heart-2-line"></i></div>
-        <div class="info-title">Our Values</div>
-        <div class="info-desc">
-          <strong>Freshness First:</strong> We prioritize fresh and safe products for our customers.<br>
-          <strong>Customer-Centric:</strong> Every shopper’s experience matters; we go the extra mile.<br>
-          <strong>Community Focused:</strong> Supporting local farmers and suppliers is at the heart of what we do.
-        </div>
-      </div>
-      <div class="info-card">
-        <div class="info-icon"><i class="ri-flag-2-line"></i></div>
-        <div class="info-title">Our Goal</div>
-        <div class="info-desc">
-          To be the preferred grocery destination in Muntinlupa, providing convenient access to quality food products while maintaining excellent service and value.
-        </div>
+      <div class="about-values">
+        <h3>Our Values</h3>
+        <ol>
+          <li>
+            <span class="num">01</span>
+            <div><strong>Freshness First</strong><p>We prioritize fresh and safe products for our customers.</p></div>
+          </li>
+          <li>
+            <span class="num">02</span>
+            <div><strong>Customer-Centric</strong><p>Every shopper’s experience matters; we go the extra mile.</p></div>
+          </li>
+          <li>
+            <span class="num">03</span>
+            <div><strong>Community Focused</strong><p>Supporting local farmers and suppliers is at the heart of what we do.</p></div>
+          </li>
+        </ol>
       </div>
     </section>
 
     <!-- Services -->
-    <section class="info-sections">
-      <div class="info-card">
-        <div class="info-icon"><i class="ri-truck-line"></i></div>
-        <div class="info-title">Home Delivery</div>
-        <div class="info-desc">Quick and reliable delivery for your convenience.</div>
-      </div>
-      <div class="info-card">
-        <div class="info-icon"><i class="ri-box-3-line"></i></div>
-        <div class="info-title">Bulk Orders</div>
-        <div class="info-desc">Perfect for parties, events, or small businesses.</div>
-      </div>
-      <div class="info-card">
-        <div class="info-icon"><i class="ri-star-line"></i></div>
-        <div class="info-title">Loyalty Program</div>
-        <div class="info-desc">Earn rewards and enjoy exclusive discounts.</div>
+    <section class="services">
+      <span class="eyebrow">Services</span>
+      <h2>Groceries, your way.</h2>
+      <div class="services-row">
+        <div class="service">
+          <div class="service-num">01</div>
+          <div class="service-title"><i class="ri-truck-line"></i> Home Delivery</div>
+          <div class="service-desc">Quick and reliable delivery for your convenience.</div>
+        </div>
+        <div class="service">
+          <div class="service-num">02</div>
+          <div class="service-title"><i class="ri-box-3-line"></i> Bulk Orders</div>
+          <div class="service-desc">Perfect for parties, events, or small businesses.</div>
+        </div>
+        <div class="service">
+          <div class="service-num">03</div>
+          <div class="service-title"><i class="ri-star-line"></i> Loyalty Program</div>
+          <div class="service-desc">Earn rewards and enjoy exclusive discounts.</div>
+        </div>
       </div>
     </section>
 
     <!-- Testimonials -->
-    <section class="info-sections" id="testimonials">
-      <div class="info-card">
-        <div class="info-icon"><i class="ri-chat-3-line"></i></div>
-        <div class="info-title">Testimonial</div>
-        <div class="info-desc">
-          “Reyona Grocery Hub is my go-to for fresh vegetables and friendly service. Laging sulit!” – Maria Santos, Muntinlupa
-        </div>
+    <section id="testimonials">
+      <div class="section-head">
+        <span class="eyebrow">Testimonials</span>
+        <h2 class="section-title">Kind words from our neighbors</h2>
       </div>
-      <div class="info-card">
-        <div class="info-icon"><i class="ri-chat-3-line"></i></div>
-        <div class="info-title">Testimonial</div>
-        <div class="info-desc">
-          “They deliver fast, and the products are always top quality. Highly recommended!” – Jose Ramirez, Alabang
-        </div>
+      <div class="quotes">
+        <figure class="quote">
+          <i class="ri-double-quotes-l"></i>
+          <blockquote>Reyona Grocery Hub is my go-to for fresh vegetables and friendly service. Laging sulit!</blockquote>
+          <figcaption><span class="avatar">M</span><div><strong>Maria Santos</strong><small>Muntinlupa</small></div></figcaption>
+        </figure>
+        <figure class="quote">
+          <i class="ri-double-quotes-l"></i>
+          <blockquote>They deliver fast, and the products are always top quality. Highly recommended!</blockquote>
+          <figcaption><span class="avatar">J</span><div><strong>Jose Ramirez</strong><small>Alabang</small></div></figcaption>
+        </figure>
       </div>
     </section>
 
     <!-- FAQ -->
-    <section class="info-sections" id="faq">
-      <div class="info-card">
-        <div class="info-icon"><i class="ri-question-answer-line"></i></div>
-        <div class="info-title">Do you offer home delivery?</div>
-        <div class="info-desc">Yes! We deliver across Muntinlupa and select NCR areas.</div>
+    <section class="faq" id="faq">
+      <div class="faq-intro">
+        <span class="eyebrow">FAQ</span>
+        <h2 class="display">Got questions?</h2>
+        <p>Quick answers to what shoppers ask us most.</p>
       </div>
-      <div class="info-card">
-        <div class="info-icon"><i class="ri-question-answer-line"></i></div>
-        <div class="info-title">Can I place bulk orders?</div>
-        <div class="info-desc">Absolutely, please contact us in advance.</div>
-      </div>
-      <div class="info-card">
-        <div class="info-icon"><i class="ri-question-answer-line"></i></div>
-        <div class="info-title">Do you accept cashless payments?</div>
-        <div class="info-desc">Yes, we accept credit/debit cards and GCash.</div>
+      <div class="faq-list">
+        <details class="faq-item" open>
+          <summary>Do you offer home delivery?</summary>
+          <p>Yes! We deliver across Muntinlupa and select NCR areas.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I place bulk orders?</summary>
+          <p>Absolutely, please contact us in advance.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Do you accept cashless payments?</summary>
+          <p>Yes, we accept credit/debit cards and GCash.</p>
+        </details>
       </div>
     </section>
 
     <!-- Contact -->
-    <section class="info-sections" id="contact">
-      <div class="info-card">
-        <div class="info-icon"><i class="ri-map-pin-line"></i></div>
-        <div class="info-title">Get in Touch</div>
-        <div class="info-desc">
-          Address: 4-36 7B Ilaya Street, Barangay Alabang, City of Muntinlupa, NCR, 1770, Philippines<br>
-          Phone: <a href="tel:+639358201476" style="color:var(--accent);">+63 948 478 6641</a><br>
-          Email: <a href="mailto:info@reyonagrocery.store" style="color:var(--accent);">info@reyonagrocery.store</a>
-        </div>
+    <section class="contact" id="contact">
+      <div class="contact-details">
+        <span class="eyebrow">Contact</span>
+        <h2>Get in Touch</h2>
+        <ul class="contact-list">
+          <li>
+            <i class="ri-map-pin-line"></i>
+            <div><strong>Address</strong>4-36 7B Ilaya Street, Barangay Alabang, City of Muntinlupa, National Capital Region (NCR), 1770, Philippines</div>
+          </li>
+          <li>
+            <i class="ri-phone-line"></i>
+            <div><strong>Phone</strong><a href="tel:+639484786641">+63 948 478 6641</a></div>
+          </li>
+          <li>
+            <i class="ri-mail-line"></i>
+            <div><strong>Email</strong><a href="mailto:info@reyonamart.shop">info@reyonamart.shop</a></div>
+          </li>
+          <li>
+            <i class="ri-time-line"></i>
+            <div><strong>Business Hours</strong>Monday to Saturday, 8:00 AM – 8:00 PM<br>Sunday, 8:00 AM – 5:00 PM</div>
+          </li>
+        </ul>
       </div>
-      <div class="info-card">
-        <div class="info-icon"><i class="ri-time-line"></i></div>
-        <div class="info-title">Business Hours</div>
-        <div class="info-desc">
-          Monday to Saturday, 8:00 AM – 8:00 PM<br>Sunday, 8:00 AM – 5:00 PM
-        </div>
-      </div>
-      <div class="info-card">
-        <div class="info-icon"><i class="ri-mail-send-line"></i></div>
-        <div class="info-title">Message Us</div>
-        <div class="info-desc">
-          Para sa inquiries o feedback, maari kayong magpadala ng email o tumawag sa aming hotline. Nandito kami para tumulong sa lahat ng inyong pangangailangan sa grocery shopping!
-        </div>
+      <div class="contact-msg">
+        <h3>Message Us</h3>
+        <p>Para sa inquiries o feedback, maari kayong magpadala ng email o tumawag sa aming hotline. Nandito kami para tumulong sa lahat ng inyong pangangailangan sa grocery shopping!</p>
+        <a href="mailto:info@reyonamart.shop" class="btn-primary">Send an Email</a>
       </div>
     </section>
 
     <!-- Policy Links Section -->
     <section class="policy-sections" id="policies">
+      <div class="policy-sections-title">Policies</div>
       <div class="policy-card">
         <div class="policy-title">Privacy Policy</div>
         <div class="policy-body">
-          Your privacy is important to us. We are committed to protecting your information and will never share it with third parties without your consent.<br><br>
-          <em>This is a PICTURES . The detailed privacy policy will be available soon.</em>
+          Your privacy is important to us. We are committed to protecting your information and will never share it with third parties without your consent.
         </div>
+        <a href="privacy-policy.html" class="policy-link">Read policy <i class="ri-arrow-right-line"></i></a>
       </div>
       <div class="policy-card">
         <div class="policy-title">Terms of Service</div>
         <div class="policy-body">
-          By using Reyona Grocery Hub, you agree to our terms and conditions, including compliance with applicable laws and respect for intellectual property.<br><br>
-          <em>This is a PICTURES . The detailed terms will be available soon.</em>
+          By using Reyona Grocery Hub, you agree to our terms and conditions, including compliance with applicable laws and respect for intellectual property.
         </div>
+        <a href="terms.html" class="policy-link">Read terms <i class="ri-arrow-right-line"></i></a>
       </div>
       <div class="policy-card">
         <div class="policy-title">Refund Policy</div>
         <div class="policy-body">
-          Not satisfied with your purchase? We offer easy returns and exchanges for eligible products within 7 days of delivery.<br><br>
-          <em>This is a PICTURES . Full refund policy coming soon.</em>
+          Not satisfied with your purchase? We offer easy returns and exchanges for eligible products within 7 days of delivery.
         </div>
+        <a href="refund-policy.html" class="policy-link">Read policy <i class="ri-arrow-right-line"></i></a>
       </div>
     </section>
   </main>
@@ -604,9 +885,9 @@
           Reyona Grocery Hub
         </div>
         <div class="footer-desc">
-          4-36 7B Ilaya Street, Barangay Alabang, City of Muntinlupa, NCR, 1770, Philippines<br>
-          Email: <a href="mailto:info@reyonagrocery.store" style="color:var(--accent);">info@reyonagrocery.store</a><br>
-          Phone: <a href="tel:+639358201476" style="color:var(--accent);">+63 948 478 6641</a><br>
+          4-36 7B Ilaya Street, Barangay Alabang, City of Muntinlupa, National Capital Region (NCR), 1770, Philippines<br>
+          Email: <a href="mailto:info@reyonamart.shop">info@reyonamart.shop</a><br>
+          Phone: <a href="tel:+639484786641">+63 948 478 6641</a><br>
           VAT: 528-104-697-000
         </div>
       </div>

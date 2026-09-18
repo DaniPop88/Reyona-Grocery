@@ -4,170 +4,204 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Order Summary | Reyona Grocery Hub</title>
-  <link rel="icon" type="image/png" href="image/FAVICON.png" />
+  <link rel="icon" type="image/png" href="image/LOGO.png" />
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
   <!-- Remixicon for icons -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
   <style>
     :root {
       --primary: #1e7e34;
-      --secondary: #f8fafc;
+      --primary-dark: #0f3d1e;
+      --primary-soft: #e7f3e9;
+      --secondary: #fbf9f2;
       --accent: #fbc02d;
-      --text-dark: #232323;
+      --accent-soft: #fff4cc;
+      --text-dark: #1d2a20;
       --text-light: #fff;
-      --radius: 1rem;
-      --shadow: 0 10px 24px 0 rgba(30,126,52,0.07);
-      --border: 1px solid #e8e9ef;
+      --muted: #5f6b62;
+      --radius: 1.25rem;
+      --shadow: 0 14px 34px -14px rgba(15,61,30,0.22);
+      --border: 1px solid #e8e4d3;
       --white: #fff;
-      --input-bg: #f7f7f7;
-      --input-border: #cfd8dc;
-      --input-radius: .5rem;
-      --error: #e53935;
-      --success: #388e3c;
+      --input-bg: #fdfcf8;
+      --input-border: #d6d2bd;
+      --input-radius: .8rem;
+      --error: #d33b37;
+      --success: #2e7d32;
+      --display: 'Fraunces', Georgia, serif;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Inter', Arial, sans-serif; background: var(--secondary); color: var(--text-dark);
-      min-height: 100vh; line-height: 1.6;
+      min-height: 100vh; line-height: 1.65; -webkit-font-smoothing: antialiased;
     }
     a { text-decoration: none; color: inherit; transition: color .2s; }
     img { max-width: 100%; display: block; border-radius: .5rem; }
     button, input, select, textarea { font-family: inherit; outline: none; border: none; background: none; }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
     .header {
-      width: 100%; background: var(--primary); color: var(--text-light);
-      box-shadow: var(--shadow); position: sticky; top: 0; z-index: 99;
+      width: 100%; background: var(--white); color: var(--primary-dark);
+      border-bottom: var(--border); position: sticky; top: 0; z-index: 99;
     }
     .nav {
-      display: flex; align-items: center; justify-content: space-between;
-      max-width: 1200px; margin: 0 auto; padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .6rem 1.5rem;
+      max-width: 1200px; margin: 0 auto; padding: .85rem 2rem;
       position: relative;
     }
     .nav-logo {
-      display: flex; align-items: center; font-size: 1.5rem;
-      font-weight: 900; gap: 0.75rem; letter-spacing: 1px; color: var(--accent);
+      display: flex; align-items: center; font-family: var(--display); font-size: 1.45rem;
+      font-weight: 700; gap: 0.7rem; color: var(--primary-dark);
     }
-    .nav-logo img { width: 40px; height: 40px; }
+    .nav-logo img { width: 42px; height: 42px; border-radius: 50%; }
     .nav-list {
-      display: flex; align-items: center; gap: 2rem;
-      position: relative;
+      display: flex; align-items: center; flex-wrap: wrap; gap: .4rem 1.9rem; list-style: none;
     }
     .nav-link {
-      color: var(--text-light); font-weight: 700; font-size: 1rem;
-      padding: 0.25rem 0; position: relative; transition: color .2s;
+      color: var(--text-dark); font-weight: 600; font-size: .95rem;
+      padding: 0.35rem 0; position: relative; transition: color .2s;
     }
-    .nav-link.active, .nav-link:hover { color: var(--accent); }
+    .nav-link::after {
+      content: ''; position: absolute; left: 0; bottom: 0; width: 0; height: 2px; background: var(--accent);
+      transition: width .25s;
+    }
+    .nav-link.active, .nav-link:hover { color: var(--primary); }
+    .nav-link.active::after, .nav-link:hover::after { width: 100%; }
+
+    /* Page banner */
+    .page-banner {
+      background:
+        radial-gradient(circle at 90% 20%, rgba(251,192,45,.3) 0, rgba(251,192,45,0) 45%),
+        linear-gradient(135deg, #0f3d1e 0%, #1e7e34 100%);
+      color: var(--white); text-align: center; padding: 2.6rem 1.25rem 5.5rem;
+    }
+    .page-banner .eyebrow {
+      display: inline-block; font-size: .78rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: .6rem;
+    }
+    .page-banner h1 { font-family: var(--display); font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; line-height: 1.1; }
+    .page-banner p { color: #cfe6d4; margin-top: .6rem; }
+
     main {
-      max-width: 550px;
-      margin: 0 auto;
-      padding: 2.5rem 1rem 3rem;
+      max-width: 1100px;
+      margin: -3.5rem auto 0;
+      padding: 0 1.25rem 3rem;
+      position: relative;
     }
     .summary-container {
-      background: var(--white);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 2.2rem 1.3rem 2rem;
-      margin-top: 2.5rem;
-      margin-bottom: 2.5rem;
+      display: grid; grid-template-columns: 1.1fr 1fr; gap: 1.5rem; align-items: start;
     }
+    .summary-card, .form-card {
+      background: var(--white);
+      border: var(--border);
+      border-radius: 1.75rem;
+      box-shadow: var(--shadow);
+      padding: 2rem 1.8rem;
+    }
+    .form-card { border-top: 6px solid var(--accent); }
     .summary-header {
-      display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;
     }
     .summary-header img {
-      width: 38px; height: 38px;
+      width: 44px; height: 44px; border-radius: 50%;
     }
     .summary-title {
-      font-size: 1.65rem;
-      font-weight: 900;
-      color: var(--primary);
-      letter-spacing: .8px;
+      font-family: var(--display);
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      line-height: 1.1;
     }
     .summary-desc {
-      color: #546e7a;
-      font-size: 1.02rem;
-      margin-bottom: 2rem;
+      color: var(--muted);
+      font-size: .98rem;
+      margin-bottom: 1.6rem;
     }
+    .table-wrap { overflow-x: auto; margin-bottom: 1.5rem; border: var(--border); border-radius: 1rem; }
     .order-items-table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 2rem;
-      font-size: 1rem;
+      font-size: .97rem;
     }
     .order-items-table th,
     .order-items-table td {
-      padding: 0.7rem .5rem;
+      padding: 0.8rem .9rem;
       text-align: left;
-      border-bottom: 1px solid #ececec;
+      border-bottom: 1px solid #efebda;
     }
     .order-items-table th {
-      color: var(--primary);
-      letter-spacing: .4px;
+      color: var(--primary-dark);
+      letter-spacing: .06em;
+      text-transform: uppercase;
       font-weight: 700;
-      background: #f8f8f8;
-      font-size: 1.02rem;
+      background: var(--primary-soft);
+      font-size: .78rem;
     }
     .order-items-table td {
-      color: #232323;
+      color: var(--text-dark);
     }
+    .order-items-table tbody tr:last-child td { border-bottom: none; }
     .order-total-row td {
-      font-weight: 900;
-      color: var(--primary);
-      border-top: 2px solid #e8e9ef;
-      background: #f7f7f7;
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--primary-dark);
+      border-top: 2px solid var(--accent);
+      background: var(--accent-soft);
     }
     .order-info {
-      margin-bottom: 2rem;
-      background: #f7f7f7;
-      border-radius: .7rem;
-      padding: 1.1rem 1rem;
-      font-size: 1.02rem;
-      color: #232323;
+      background: var(--primary-soft);
+      border-left: 5px solid var(--primary);
+      border-radius: 0 1rem 1rem 0;
+      padding: 1.1rem 1.2rem;
+      font-size: .95rem;
+      color: #2c3b2f;
     }
     .order-info strong {
-      color: var(--primary);
-      font-weight: 900;
+      color: var(--primary-dark);
+      font-weight: 700;
     }
-    .customer-form {
-      margin-bottom: 2.2rem;
-      background: #f9fbe7;
-      border-radius: .7rem;
-      padding: 1.5rem 1rem 1.2rem;
-      box-shadow: 0 2px 10px 0 rgba(30,126,52,0.06);
-    }
+    .form-card-title { font-family: var(--display); font-size: 1.5rem; color: var(--primary-dark); margin-bottom: 1.3rem; }
+    .customer-form { margin-bottom: 0; }
     .form-group {
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.2rem;
       display: flex;
       flex-direction: column;
     }
     .form-label {
-      font-weight: 700;
-      font-size: 1rem;
-      margin-bottom: 0.5rem;
-      color: var(--primary);
+      font-weight: 600;
+      font-size: .9rem;
+      margin-bottom: 0.4rem;
+      color: var(--primary-dark);
     }
     .form-input, .form-select, .form-textarea {
       background: var(--input-bg);
-      border: 1px solid var(--input-border);
+      border: 1.5px solid var(--input-border);
       border-radius: var(--input-radius);
       font-size: 1rem;
-      padding: 0.85rem 1.1rem;
-      color: #232323;
+      padding: 0.8rem 1rem;
+      color: var(--text-dark);
       width: 100%;
-      transition: border .2s;
+      transition: border .2s, box-shadow .2s;
     }
     .form-input:focus, .form-select:focus, .form-textarea:focus {
       border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(30,126,52,.14);
     }
     .form-textarea {
-      min-height: 60px;
+      min-height: 76px;
       resize: vertical;
     }
     .form-error {
       color: var(--error);
-      font-size: 0.98rem;
-      margin-top: .35rem;
+      font-size: 0.88rem;
+      margin-top: .3rem;
       font-weight: 600;
     }
+    .form-error:empty { display: none; }
     .form-success {
       color: var(--success);
       font-size: 1.1rem;
@@ -178,81 +212,85 @@
     .submit-btn {
       background: var(--primary);
       color: var(--white);
-      font-weight: 900;
-      font-size: 1.08rem;
-      border-radius: .7rem;
+      font-weight: 700;
+      font-size: 1.05rem;
+      border-radius: 999px;
       padding: 0.95rem 2.2rem;
       border: none;
       cursor: pointer;
-      transition: background .18s, color .18s;
-      box-shadow: 0 2px 8px 0 rgba(30,126,52,0.10);
-      margin-top: .5rem;
+      transition: background .18s, color .18s, transform .18s;
+      box-shadow: 0 12px 22px -10px rgba(30,126,52,0.6);
+      margin-top: .4rem;
       display: block;
       width: 100%;
     }
     .submit-btn:hover {
       background: var(--accent);
-      color: var(--primary);
+      color: var(--primary-dark);
+      transform: translateY(-2px);
     }
     .confirmation-message {
-      background: #e8f5e9;
+      background: var(--primary-soft);
       border: 1.5px solid var(--primary);
-      border-radius: .7rem;
-      padding: 1.7rem 1.2rem;
-      color: var(--primary);
-      font-size: 1.08rem;
-      font-weight: 700;
+      border-radius: 1.1rem;
+      padding: 1.7rem 1.4rem;
+      color: var(--primary-dark);
+      font-size: 1rem;
+      font-weight: 600;
       text-align: center;
-      margin-top: 2rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 2px 10px 0 rgba(30,126,52,0.07);
+      margin-bottom: 1.2rem;
     }
     .payment-info {
-      background: #fffde7;
+      background: var(--accent-soft);
       border: 1.5px solid var(--accent);
-      border-radius: .7rem;
-      padding: 1.3rem 1rem;
-      color: #bc9800;
-      font-size: 1.04rem;
-      font-weight: 700;
+      border-radius: 1.1rem;
+      padding: 1.2rem 1.2rem;
+      color: #6b5200;
+      font-size: .95rem;
+      font-weight: 600;
       text-align: center;
-      margin-top: 1.2rem;
-      margin-bottom: 1.8rem;
-      box-shadow: 0 2px 8px 0 rgba(251,192,45,0.09);
     }
-    @media (max-width: 700px) {
-      main { max-width: 99vw; padding: 1.5rem .5rem 2rem; }
-      .summary-container { padding: 1.1rem .3rem 1rem; }
-      .order-items-table { font-size: .95rem; }
-      .customer-form { padding: 1rem .4rem .8rem; }
-      .confirmation-message, .payment-info { padding: 1rem .4rem; font-size: 1rem; }
+    @media (max-width: 900px) {
+      .summary-container { grid-template-columns: 1fr; }
     }
-    @media (max-width: 500px) {
-      .nav { padding: 1rem .5rem; }
-      .summary-title { font-size: 1.2rem; }
-      .summary-header img { width: 32px; height: 32px; }
-      .order-items-table th, .order-items-table td { padding: .5rem .2rem; }
+    @media (max-width: 600px) {
+      .nav { padding: .8rem 1rem; }
+      .nav-logo { font-size: 1.2rem; }
+      .nav-logo img { width: 36px; height: 36px; }
+      .page-banner { padding: 2rem 1rem 5rem; }
+      main { padding: 0 .8rem 2rem; }
+      .summary-card, .form-card { padding: 1.4rem 1.1rem; border-radius: 1.4rem; }
+      .summary-title { font-size: 1.35rem; }
+      .order-items-table { font-size: .9rem; }
+      .order-items-table th, .order-items-table td { padding: .65rem .55rem; }
     }
     .footer {
-      background: var(--primary); color: var(--white); padding: 2.2rem 0 1rem; margin-top: 2.5rem; border-radius: var(--radius) var(--radius) 0 0;
+      background: var(--primary-dark); color: var(--white); padding: 3.5rem 0 1.4rem; margin-top: 2rem; border-radius: 2rem 2rem 0 0;
     }
     .footer-container {
-      max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 2.2rem; justify-content: space-between; align-items: flex-start; padding: 0 2rem;
+      max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 2.2rem; padding: 0 2rem;
     }
-    .footer-brand { flex: 1 1 220px; margin-bottom: 2rem;}
     .footer-logo {
-      display: flex; align-items: center; font-size: 1.2rem; font-weight: 900; gap: .6rem; margin-bottom: 0.6rem; color: var(--accent);
+      display: flex; align-items: center; font-family: var(--display); font-size: 1.4rem; font-weight: 700; gap: .6rem; margin-bottom: 0.8rem; color: var(--white);
     }
-    .footer-logo img { width: 28px; height: 28px; }
-    .footer-desc { color: #fffde7; font-size: .99rem; margin-bottom: .7rem;}
-    .footer-links-group { flex: 1 1 160px; margin-bottom: 2rem;}
-    .footer-links-title { font-size: 1rem; font-weight: 900; margin-bottom: .45rem; letter-spacing: .5px;}
-    .footer-links { display: flex; flex-direction: column; gap: .3rem;}
-    .footer-link { color: #fff2ef; font-size: .99rem; transition: color .2s; opacity: .94;}
-    .footer-link:hover { color: var(--accent);}
-    .footer-bottom { text-align: center; font-size: .97rem; color: #fff2ef; margin-top: 2rem; opacity: .85;}
-    .footer-bottom a { color: #fff; font-weight: 700; text-decoration: underline; transition: color .2s;}
-    .footer-bottom a:hover { color: var(--accent);}
+    .footer-logo img { width: 38px; height: 38px; border-radius: 50%; }
+    .footer-desc { color: #bfe0c6; font-size: .95rem; line-height: 1.8; }
+    .footer-desc a { color: var(--accent); }
+    .footer-links-title { font-size: .8rem; font-weight: 700; margin-bottom: .9rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+    .footer-links { display: flex; flex-direction: column; gap: .55rem; }
+    .footer-link { color: #d4e9d9; font-size: .96rem; transition: color .2s; }
+    .footer-link:hover { color: var(--accent); }
+    .footer-bottom {
+      max-width: 1200px; margin: 2.5rem auto 0; padding: 1.3rem 2rem 0; border-top: 1px solid rgba(255,255,255,.14);
+      text-align: center; font-size: .9rem; color: #a9cbb0;
+    }
+    @media (max-width: 1000px) {
+      .footer-container { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .footer-container { grid-template-columns: 1fr; padding: 0 1.25rem; }
+      .footer { padding: 2.5rem 0 1.1rem; }
+    }
   </style>
 </head>
 <body>
@@ -264,96 +302,108 @@
       </a>
       <ul class="nav-list" id="nav-list">
         <li><a href="index.html" class="nav-link">Home</a></li>
-        <li><a href="#shop" class="nav-link">Products</a></li>
-        <li><a href="#about" class="nav-link">About Us</a></li>
-        <li><a href="#contact" class="nav-link">Contact</a></li>
+        <li><a href="index.html#shop" class="nav-link">Products</a></li>
+        <li><a href="index.html#about" class="nav-link">About Us</a></li>
+        <li><a href="index.html#contact" class="nav-link">Contact</a></li>
       </ul>
     </nav>
   </header>
+  <div class="page-banner">
+    <span class="eyebrow">Checkout</span>
+    <h1>Almost there!</h1>
+    <p>Review your groceries and tell us where to send them.</p>
+  </div>
   <main>
     <div class="summary-container" id="order-summary-section">
-      <div class="summary-header">
-        <img src="image/LOGO.png" alt="Reyona Grocery Hub Logo">
-        <span class="summary-title">Your Order Summary</span>
+      <div class="summary-card">
+        <div class="summary-header">
+          <img src="image/LOGO.png" alt="Reyona Grocery Hub Logo">
+          <span class="summary-title">Your Order Summary</span>
+        </div>
+        <div class="summary-desc">
+          Please review your order details below. If everything looks correct, kindly enter your information and submit your order. After submission, our team will reach out to confirm your product choices, availability, and any special requests. Once confirmed, you will receive a secure payment link. For a smooth shopping experience, please finalize your payment within 24 hours.
+        </div>
+        <div class="table-wrap">
+          <table class="order-items-table" id="order-items-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Subtotal</th>
+              </tr>
+            </thead>
+            <tbody id="order-items-body">
+              <!-- Populated by JavaScript -->
+            </tbody>
+            <tfoot>
+              <tr class="order-total-row">
+                <td colspan="3">Total</td>
+                <td id="order-total">₱0.00</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div class="order-info">
+          <strong>Important:</strong> After your order is submitted, a representative from Reyona Grocery Hub will contact you to verify product details, including colors, quantities, and any preferences. Once you confirm, a payment link will be sent according to your chosen method. Please complete payment within <strong>24 hours</strong> to avoid order cancellation.
+        </div>
       </div>
-      <div class="summary-desc">
-        Please review your order details below. If everything looks correct, kindly enter your information and submit your order. After submission, our team will reach out to confirm your product choices, availability, and any special requests. Once confirmed, you will receive a secure payment link. For a smooth shopping experience, please finalize your payment within 24 hours.
-      </div>
-      <table class="order-items-table" id="order-items-table">
-        <thead>
-          <tr>
-            <th>Product</th>
-            <th>Qty</th>
-            <th>Unit Price</th>
-            <th>Subtotal</th>
-          </tr>
-        </thead>
-        <tbody id="order-items-body">
-          <!-- Populated by JavaScript -->
-        </tbody>
-        <tfoot>
-          <tr class="order-total-row">
-            <td colspan="3">Total</td>
-            <td id="order-total">₱0.00</td>
-          </tr>
-        </tfoot>
-      </table>
-      <div class="order-info">
-        <strong>Important:</strong> After your order is submitted, a representative from Reyona Grocery Hub will contact you to verify product details, including colors, quantities, and any preferences. Once you confirm, a payment link will be sent according to your chosen method. Please complete payment within <strong>24 hours</strong> to avoid order cancellation.
-      </div>
-      <form class="customer-form" id="order-form" autocomplete="off">
-        <div id="form-status"></div>
-        <div class="form-group">
-          <label class="form-label" for="customer-name">Full Name</label>
-          <input type="text" class="form-input" id="customer-name" name="customer-name" required maxlength="48" />
-          <div class="form-error" id="error-name"></div>
+      <div class="form-card">
+        <div class="form-card-title">Your Details</div>
+        <form class="customer-form" id="order-form" autocomplete="off">
+          <div id="form-status"></div>
+          <div class="form-group">
+            <label class="form-label" for="customer-name">Full Name</label>
+            <input type="text" class="form-input" id="customer-name" name="customer-name" required maxlength="48" />
+            <div class="form-error" id="error-name"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="customer-email">Email Address</label>
+            <input type="email" class="form-input" id="customer-email" name="customer-email" required maxlength="64" />
+            <div class="form-error" id="error-email"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="customer-phone">Contact Number</label>
+            <input type="tel" class="form-input" id="customer-phone" name="customer-phone" required maxlength="18" pattern="^[0-9+ ]*$" />
+            <div class="form-error" id="error-phone"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="customer-address">Delivery Address</label>
+            <textarea class="form-textarea" id="customer-address" name="customer-address" required maxlength="128"></textarea>
+            <div class="form-error" id="error-address"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="payment-method">Preferred Payment Method</label>
+            <select class="form-select" id="payment-method" name="payment-method" required>
+              <option value="">Select payment method</option>
+              <option value="GCash">GCash</option>
+              <option value="Credit/Debit Card">Credit/Debit Card</option>
+              <option value="Bank Transfer">Bank Transfer</option>
+              <option value="Cash on Delivery">Cash on Delivery</option>
+            </select>
+            <div class="form-error" id="error-payment"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="customer-notes">Additional Notes / Requests</label>
+            <textarea class="form-textarea" id="customer-notes" name="customer-notes" maxlength="128" placeholder="(Optional)"></textarea>
+          </div>
+          <button type="submit" class="submit-btn" id="order-submit-btn">Submit Order</button>
+        </form>
+        <div class="confirmation-message" id="confirmation-message" style="display:none;">
+          <i class="ri-checkbox-circle-line" style="font-size:2.2rem;vertical-align:middle;color:var(--success);"></i><br><br>
+          Thank you for placing your order with Reyona Grocery Hub!<br>
+          Your order has been received and is now pending confirmation.<br><br>
+          One of our team members will contact you soon to verify your product selections, availability, and any special requests.<br>
+          After confirmation, you will receive a secure payment link based on your chosen payment method.<br><br>
+          Please complete your payment within <strong>24 hours</strong> to secure your order. Orders not paid within this time may be automatically cancelled.<br><br>
+          If you have questions, feel free to reach out to us anytime.<br>
+          <hr style="margin:1.2rem 0;border:0;border-top:1px solid #e8e9ef;">
+          <span style="font-size:1.05rem;color:var(--primary);font-weight:700;">We appreciate your trust in Reyona Grocery Hub!</span>
         </div>
-        <div class="form-group">
-          <label class="form-label" for="customer-email">Email Address</label>
-          <input type="email" class="form-input" id="customer-email" name="customer-email" required maxlength="64" />
-          <div class="form-error" id="error-email"></div>
+        <div class="payment-info" id="payment-info" style="display:none;">
+          Payment instructions and link will be sent after you confirm your order details with our team.<br>
+          Please watch for a message from us and complete your payment promptly to avoid cancellation.
         </div>
-        <div class="form-group">
-          <label class="form-label" for="customer-phone">Contact Number</label>
-          <input type="tel" class="form-input" id="customer-phone" name="customer-phone" required maxlength="18" pattern="^[0-9+ ]*$" />
-          <div class="form-error" id="error-phone"></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="customer-address">Delivery Address</label>
-          <textarea class="form-textarea" id="customer-address" name="customer-address" required maxlength="128"></textarea>
-          <div class="form-error" id="error-address"></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="payment-method">Preferred Payment Method</label>
-          <select class="form-select" id="payment-method" name="payment-method" required>
-            <option value="">Select payment method</option>
-            <option value="GCash">GCash</option>
-            <option value="Credit/Debit Card">Credit/Debit Card</option>
-            <option value="Bank Transfer">Bank Transfer</option>
-            <option value="Cash on Delivery">Cash on Delivery</option>
-          </select>
-          <div class="form-error" id="error-payment"></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="customer-notes">Additional Notes / Requests</label>
-          <textarea class="form-textarea" id="customer-notes" name="customer-notes" maxlength="128" placeholder="(Optional)"></textarea>
-        </div>
-        <button type="submit" class="submit-btn" id="order-submit-btn">Submit Order</button>
-      </form>
-      <div class="confirmation-message" id="confirmation-message" style="display:none;">
-        <i class="ri-checkbox-circle-line" style="font-size:2.2rem;vertical-align:middle;color:var(--success);"></i><br><br>
-        Thank you for placing your order with Reyona Grocery Hub!<br>
-        Your order has been received and is now pending confirmation.<br><br>
-        One of our team members will contact you soon to verify your product selections, availability, and any special requests.<br>
-        After confirmation, you will receive a secure payment link based on your chosen payment method.<br><br>
-        Please complete your payment within <strong>24 hours</strong> to secure your order. Orders not paid within this time may be automatically cancelled.<br><br>
-        If you have questions, feel free to reach out to us anytime.<br>
-        <hr style="margin:1.2rem 0;border:0;border-top:1px solid #e8e9ef;">
-        <span style="font-size:1.05rem;color:var(--primary);font-weight:700;">We appreciate your trust in Reyona Grocery Hub!</span>
-      </div>
-      <div class="payment-info" id="payment-info" style="display:none;">
-        Payment instructions and link will be sent after you confirm your order details with our team.<br>
-        Please watch for a message from us and complete your payment promptly to avoid cancellation.
       </div>
     </div>
   </main>
@@ -365,9 +415,9 @@
           Reyona Grocery Hub
         </div>
         <div class="footer-desc">
-          4-36 7B Ilaya Street, Barangay Alabang, City of Muntinlupa, NCR, 1770, Philippines<br>
-          Email: <a href="mailto:info@reyonagrocery.store" style="color:var(--accent);">info@reyonagrocery.store</a><br>
-          Phone: <a href="tel:+639358201476" style="color:var(--accent);">+63 935 820 1476</a><br>
+          4-36 7B Ilaya Street, Barangay Alabang, City of Muntinlupa, National Capital Region (NCR), 1770, Philippines<br>
+          Email: <a href="mailto:info@reyonamart.shop">info@reyonamart.shop</a><br>
+          Phone: <a href="tel:+639484786641">+63 948 478 6641</a><br>
           VAT: 528-104-697-000
         </div>
       </div>
